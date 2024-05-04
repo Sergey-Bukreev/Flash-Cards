@@ -41,10 +41,21 @@ export const FullWidth: Story = {
     variant: 'primary',
   },
 }
-export const AsLink: Story = {
+export const AsLinkPrimary: Story = {
   args: {
     as: 'a',
     children: 'Link that looks like a button',
+    href: 'https://www.google.com/',
+    target: '_blank',
     variant: 'primary',
+  },
+}
+export const AsLinkSecondary: Story = {
+  args: {
+    as: 'a',
+    children: 'Link that looks like a button',
+    href: 'https://www.google.com/',
+    target: '_blank',
+    variant: 'secondary',
   },
 }
