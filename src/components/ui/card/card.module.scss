@@ -1,0 +1,20 @@
+.root {
+  width: 420px;
+  height: 552px;
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+
+  &:hover {
+    border: 1px solid var(--color-accent-700);
+  }
+
+  & .content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+
+    padding: 16px;
+  }
+}

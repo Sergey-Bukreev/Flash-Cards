@@ -24,7 +24,7 @@ const meta = {
   },
   component: Typography,
   tags: ['autodocs'],
-  title: 'Components/Typography',
+  title: 'Components/UI/Typography',
 } satisfies Meta<typeof Typography>
 
 export default meta
