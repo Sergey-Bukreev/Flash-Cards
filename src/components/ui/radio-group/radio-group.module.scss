@@ -1,0 +1,82 @@
+.Label {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.RadioGroupRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.RadioGroupItem {
+  all: unset;
+
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid var(--color-accent-500);
+  border-radius: 50%;
+
+  &::after {
+    pointer-events: none;
+    content: '';
+
+    position: absolute;
+    z-index: -1;
+
+    display: none;
+
+    width: 36px;
+    height: 36px;
+
+    opacity: 0.5;
+    background-color: var(--color-dark-100);
+    border-radius: 50%;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    border: 2px solid var(--color-accent-900);
+  }
+
+  &:hover::after {
+    display: block;
+  }
+
+  &.disabled:hover::after {
+    display: none;
+  }
+}
+
+.RadioGroupIndicator {
+  position: relative;
+
+  width: 8px;
+  height: 8px;
+
+  background-color: var(--color-accent-500);
+  border-radius: 50%;
+
+  &.disabled {
+    pointer-events: none;
+    background-color: var(--color-accent-900);
+  }
+}
+
+.errorMessage {
+  color: var(--color-danger-500);
+}
