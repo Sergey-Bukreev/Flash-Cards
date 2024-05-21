@@ -13,11 +13,12 @@ export type SelectProps = {
   onValueChange?: (value?: string) => void
   options: Option[]
   placeholder?: string
+  small?: boolean
   value?: string
 }
 
 export const Select = (props: SelectProps) => {
-  const { defaultValue, disabled, label, onValueChange, options, placeholder, value } = props
+  const { defaultValue, disabled, label, onValueChange, options, placeholder, small, value } = props
 
   return (
     <Typography as={'label'} className={clsx(s.Label, disabled && s.disabled)} variant={'body2'}>
@@ -28,12 +29,17 @@ export const Select = (props: SelectProps) => {
         onValueChange={onValueChange}
         value={value}
       >
-        <CustomSelect.Trigger className={clsx(s.SelectTrigger, disabled && s.disabled)}>
+        <CustomSelect.Trigger
+          className={clsx(s.SelectTrigger, disabled && s.disabled, small && s.small)}
+        >
           <CustomSelect.Value placeholder={placeholder} />
           <ArrowDownIcon className={clsx(s.Icon, disabled && s.disabled)} />
         </CustomSelect.Trigger>
         <CustomSelect.Portal>
-          <CustomSelect.Content className={s.SelectContent} position={'popper'}>
+          <CustomSelect.Content
+            className={clsx(s.SelectContent, small && s.small)}
+            position={'popper'}
+          >
             <CustomSelect.Viewport className={s.SelectViewport}>
               {options.map(option => (
                 <CustomSelect.Item
