@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { MemoryRouter } from 'react-router-dom'
 
-import { LoginForm } from './login-form'
+import { SignUp } from '@/components/forms/sign-up/sign-up'
 
-const meta: Meta<typeof LoginForm> = {
-  component: LoginForm,
+const meta: Meta<typeof SignUp> = {
+  component: SignUp,
   decorators: [
     Story => (
       <MemoryRouter>
@@ -14,7 +14,7 @@ const meta: Meta<typeof LoginForm> = {
     ),
   ],
   tags: ['autodocs'],
-  title: 'Components/Forms/LoginForm',
+  title: 'Components/Forms/Sign-Up',
 }
 
 export default meta

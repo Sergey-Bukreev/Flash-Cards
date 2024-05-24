@@ -4,7 +4,7 @@ import { Input, InputProps, InputType } from '@/components/ui/input/input'
 
 export type FormInputProps<T extends FieldValues> = {
   control: any
-  name: 'email' | 'password'
+  name: 'confirmPassword' | 'email' | 'password'
 } & Omit<InputProps<InputType>, 'onChange' | 'value'> &
   UseControllerProps<T>
 export function FormInput<T extends FieldValues>({ control, name, ...rest }: FormInputProps<T>) {

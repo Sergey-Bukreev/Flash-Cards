@@ -10,11 +10,7 @@
   gap: 8px;
 
   width: 100%;
-  margin-bottom: 12px;
-}
-
-.checkbox {
-  margin-bottom: 6px;
+  margin-bottom: 60px;
 }
 
 .title {
@@ -22,31 +18,17 @@
   text-align: center;
 }
 
-.recoverLink,
-.recoverLink:visited {
-  display: flex;
-  justify-content: flex-end;
-
-  width: 100%;
-  margin-bottom: 66px;
-
-  color: inherit;
-  text-align: right;
-  text-decoration: none;
-}
-
 .button {
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .caption {
   margin-bottom: 11px;
   color: var(--color-light-900);
   text-align: center;
-  margin-top: 24px;
 }
 
-.signUpLink {
+.signInLink {
   display: flex;
   justify-content: center;
 
