@@ -1,0 +1,23 @@
+.card {
+  max-width: 414px;
+  padding: 32px 36px 30px;
+}
+
+.title {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 19px;
+}
+
+.text {
+  margin-bottom: 64px;
+  color: var(--color-light-900);
+  opacity: 0.5;
+  text-align: center;
+}

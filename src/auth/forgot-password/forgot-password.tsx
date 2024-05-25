@@ -1,11 +1,8 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
 
+import { FormValues, useForgotPassword } from '@/auth/forgot-password/use-forgot-password'
 import { FormInput } from '@/components/controled/form-input'
-import {
-  FormValues,
-  useForgotPassword,
-} from '@/components/forms/forgot-password/use-forgot-password'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Typography } from '@/components/ui/typography'

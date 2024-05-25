@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
 
+import { FormValues, useSignUp } from '@/auth/sign-up/use-sing-up'
 import { FormInput } from '@/components/controled/form-input'
-import { FormValues, useSignUp } from '@/components/forms/sign-up/use-sing-up'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Typography } from '@/components/ui/typography'

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 
+import { FormValues, useSignIn } from '@/auth/sign-in/use-sign-in'
 import { FormCheckbox } from '@/components/controled/form-checkbox'
 import { FormInput } from '@/components/controled/form-input'
-import { FormValues, useSignIn } from '@/components/forms/sign-in/use-sign-in'
 import { Card } from '@/components/ui/card'
 import { Typography } from '@/components/ui/typography'
 
 import s from './sign-in.module.scss'
 
-import { Button } from '../../ui/button'
+import { Button } from '../../components/ui/button'
 
 export type SignInProps = {
   onSubmit: (data: FormValues) => void

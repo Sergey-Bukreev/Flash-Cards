@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { MemoryRouter } from 'react-router-dom'
 
-import { CreateNewPassword } from '@/components/forms/create-new-password/create-new-password'
+import { CheckEmail } from '@/auth/check-email/check-email'
 
-const meta: Meta<typeof CreateNewPassword> = {
-  component: CreateNewPassword,
+const meta: Meta<typeof CheckEmail> = {
+  component: CheckEmail,
   decorators: [
     Story => (
       <MemoryRouter>
@@ -14,10 +14,14 @@ const meta: Meta<typeof CreateNewPassword> = {
     ),
   ],
   tags: ['autodocs'],
-  title: 'Components/Forms/Create-New-Password',
+  title: 'Components/Forms/Check-Email',
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const DefaultExample: Story = {}
+export const DefaultExample: Story = {
+  args: {
+    email: 'testEmail@google.com',
+  },
+}

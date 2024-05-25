@@ -1,10 +1,10 @@
 import { FC } from 'react'
 
-import { FormInput } from '@/components/controled/form-input'
 import {
   FormValues,
   useCreateNewpPassword,
-} from '@/components/forms/create-new-password/use-create-new-password'
+} from '@/auth/create-new-password/use-create-new-password'
+import { FormInput } from '@/components/controled/form-input'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Typography } from '@/components/ui/typography'
