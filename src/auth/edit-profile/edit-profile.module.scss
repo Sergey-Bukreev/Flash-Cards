@@ -1,0 +1,27 @@
+.card {
+  width: 100%;
+  max-width: 414px;
+  padding: 32px 36px 30px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+  margin-bottom: 12px;
+}
+.title {
+  margin-bottom: 28px;
+  text-align: center;
+}
+.button {
+  margin-bottom: 40px;
+}
+.childrenWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}

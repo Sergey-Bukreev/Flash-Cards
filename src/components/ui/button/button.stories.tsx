@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { SignOutIcon } from '@/components/ui/drop-down/icons/sing-out-icon'
+
 import { Button } from './'
 
 const meta = {
@@ -57,5 +59,25 @@ export const AsLinkSecondary: Story = {
     href: 'https://www.google.com/',
     target: '_blank',
     variant: 'secondary',
+  },
+}
+export const WithIconExample: Story = {
+  args: {
+    as: 'a',
+    children: (
+      <div
+        style={{
+          alignItems: 'center',
+          display: 'flex',
+          gap: '4px',
+          justifyContent: 'space-between',
+        }}
+      >
+        <SignOutIcon /> {'Back to Google'}
+      </div>
+    ),
+    href: 'https://www.google.com/',
+    target: '_blank',
+    variant: 'primary',
   },
 }
