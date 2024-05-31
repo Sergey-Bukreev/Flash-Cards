@@ -1,0 +1,17 @@
+.nameWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  img {
+    width: 7.5rem;
+    height: 3rem;
+    object-fit: cover;
+  }
+}
+
+.iconsWrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

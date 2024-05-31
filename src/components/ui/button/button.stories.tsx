@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { PlayIcon } from '@/components/ui/drop-down/icons/play-icon'
 import { SignOutIcon } from '@/components/ui/drop-down/icons/sing-out-icon'
 
 import { Button } from './'
@@ -79,5 +80,14 @@ export const WithIconExample: Story = {
     href: 'https://www.google.com/',
     target: '_blank',
     variant: 'primary',
+  },
+}
+export const IconButtonExample: Story = {
+  args: {
+    as: 'a',
+    children: <PlayIcon />,
+    href: 'https://www.google.com/',
+    target: '_blank',
+    variant: 'icon',
   },
 }
