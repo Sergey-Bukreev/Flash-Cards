@@ -10,7 +10,7 @@ import { Deck } from '@/services/decks/decks.type'
 
 import s from './decks-table.module.scss'
 
-import baseDeckImage from './../../../assets/baseDeckImage.png'
+import baseDeckImage from '../../../assets/base-deck-image.png'
 export type DecksTableProps = {
   currentUserId: string
   decks: Deck[] | undefined

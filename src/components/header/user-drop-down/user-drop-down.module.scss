@@ -1,0 +1,15 @@
+.userInfoWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+.userNameWrapper {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  text-align: start;
+}
+.Link {
+  text-decoration: none;
+}
