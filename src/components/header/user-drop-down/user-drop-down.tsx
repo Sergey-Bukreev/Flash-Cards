@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Avatar } from '@/components/ui/avatar'
+import { useUserDropDown } from '@/components/header/user-drop-down/use-user-drop-down'
 import { DropDown, DropDownItem, DropDownSeparator } from '@/components/ui/drop-down'
 import { PersonIcon } from '@/components/ui/drop-down/icons/person-icon'
 import { SignOutIcon } from '@/components/ui/drop-down/icons/sing-out-icon'
@@ -20,30 +20,15 @@ export type UserDropDownProps = {
 }
 export const UserDropDown = (props: UserDropDownProps) => {
   const { avatar, email, onLogout, userName } = props
-  const selectTrigger = (avatar: string | undefined) => {
-    if (avatar?.length) {
-      return (
-        <div>
-          <Avatar src={avatar} />
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          <Avatar src={baseUserAvatar} />
-        </div>
-      )
-    }
-  }
-  const photo = selectTrigger(avatar)
+  const { photo, trigger } = useUserDropDown({ avatar, baseUserAvatar, userName })
 
   return (
-    <DropDown trigger={photo}>
+    <DropDown trigger={trigger}>
       <DropDownItem>
         <div className={s.userInfoWrapper}>
           {photo}
           <div className={s.userNameWrapper}>
-            <Typography variant={'subTitle1'}>{userName}</Typography>
+            <Typography variant={'subTitle2'}>{userName}</Typography>
             <Typography variant={'caption'}>{email}</Typography>
           </div>
         </div>

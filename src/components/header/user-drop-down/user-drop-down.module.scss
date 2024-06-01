@@ -1,15 +1,30 @@
 .userInfoWrapper {
   display: flex;
-  align-items: center;
   flex-direction: row;
   gap: 0.5rem;
+  align-items: center;
 }
+
+.name {
+  text-decoration: underline dashed var(--color-light-100) 1px;
+  text-underline-offset: 6px;
+}
+
+.trigger {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
 .userNameWrapper {
   display: flex;
-  align-items: start;
   flex-direction: column;
+  align-items: start;
   text-align: start;
 }
+
 .Link {
   text-decoration: none;
 }
