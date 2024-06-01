@@ -2,8 +2,8 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { Header } from '@/components/header/header'
 import { Meta, StoryObj } from '@storybook/react'
-
-const meta = {
+type HeaderPropsAndCustomArgs = React.ComponentProps<typeof Header>
+const meta: Meta<HeaderPropsAndCustomArgs> = {
   argTypes: {
     onLogout: { action: 'logout' },
   },
@@ -17,12 +17,11 @@ const meta = {
   ],
   tags: ['autodocs'],
   title: 'Components/Header/Header',
-} satisfies Meta<typeof Header>
+}
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<HeaderPropsAndCustomArgs>
 export const LoggedInExample: Story = {
-  // @ts-expect-error
   args: {
     avatar:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXBnJCBrKnx5d9Ru8Pe6I9JjZR5SaMsdGk2A&usqp=CAU',
@@ -33,7 +32,6 @@ export const LoggedInExample: Story = {
   },
 }
 export const LoggedOutExample: Story = {
-  // @ts-expect-error
   args: {
     isLoggedIn: false,
   },
