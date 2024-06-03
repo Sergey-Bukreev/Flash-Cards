@@ -13,7 +13,7 @@ import s from './user-drop-down.module.scss'
 import baseUserAvatar from './../../../assets/base-user-avatar.png'
 
 export type UserDropDownProps = {
-  avatar: string | undefined
+  avatar: null | string
   email: string
   onLogout: ComponentPropsWithoutRef<typeof DropdownMenuItem>['onSelect']
   userName: string

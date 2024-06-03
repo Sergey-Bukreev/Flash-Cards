@@ -4,7 +4,7 @@ import { Typography } from '@/components/ui/typography'
 import s from './user-drop-down.module.scss'
 
 interface UseUserAvatarProps {
-  avatar?: string
+  avatar: null | string
   baseUserAvatar: string
   userName: string
 }

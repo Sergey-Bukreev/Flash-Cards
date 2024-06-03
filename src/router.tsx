@@ -6,12 +6,18 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { DecksPage } from '@/pages/decs.page'
+import { Layout } from '@/components/layout/layout'
+import { DecksPage } from '@/pages/decks/decks.page'
+import { SignInPage } from '@/pages/sign-in/sign-in.page'
 
 const publicRoutes: RouteObject[] = [
   {
     element: <div>login</div>,
     path: '/login',
+  },
+  {
+    element: <SignInPage />,
+    path: '/sign-in',
   },
 ]
 
@@ -30,10 +36,15 @@ function PrivateRoutes() {
 
 const router = createBrowserRouter([
   {
-    children: privateRoutes,
-    element: <PrivateRoutes />,
+    children: [
+      {
+        children: privateRoutes,
+        element: <PrivateRoutes />,
+      },
+      ...publicRoutes,
+    ],
+    element: <Layout />,
   },
-  ...publicRoutes,
 ])
 
 export function Router() {
