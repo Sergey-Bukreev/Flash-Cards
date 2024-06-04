@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/button'
 import s from './header.module.scss'
 export type HeaderProps =
   | ({
-      isLoggedIn: false
+      isAuthenticated: false
     } & Partial<UserDropDownProps>)
   | ({
-      isLoggedIn: true
+      isAuthenticated: true
     } & UserDropDownProps)
 export const Header = (props: HeaderProps) => {
-  const { avatar, email, isLoggedIn, onLogout, userName } = props
+  const { avatar, email, isAuthenticated, onLogout, userName } = props
 
   return (
     <header className={s.header}>
@@ -21,10 +21,10 @@ export const Header = (props: HeaderProps) => {
         <Link to={'https://it-incubator.io'}>
           <LogoIcon />
         </Link>
-        {isLoggedIn && (
+        {isAuthenticated && (
           <UserDropDown avatar={avatar} email={email} onLogout={onLogout} userName={userName} />
         )}
-        {!isLoggedIn && (
+        {!isAuthenticated && (
           <Button as={Link} to={'/sign-in'}>
             {'Sign In'}
           </Button>

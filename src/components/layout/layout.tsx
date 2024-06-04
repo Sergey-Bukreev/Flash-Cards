@@ -20,7 +20,7 @@ export const Layout = () => {
     <LayoutPrimitive
       avatar={data?.avatar ?? null}
       email={data?.email ?? ''}
-      isLoggedIn={isAuthenticated}
+      isAuthenticated={isAuthenticated}
       onLogout={() => {}}
       userName={data?.name ?? ''}
     >

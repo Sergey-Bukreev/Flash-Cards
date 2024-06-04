@@ -9,6 +9,7 @@ const authService = flashcardsApi.injectEndpoints({
         query: () => '/v1/auth/me',
       }),
       signIn: builder.mutation<LoginResponse, LoginArgs>({
+        invalidatesTags: ['Me'],
         async onQueryStarted(_, { queryFulfilled }) {
           const { data } = await queryFulfilled
 
@@ -25,10 +26,17 @@ const authService = flashcardsApi.injectEndpoints({
           url: '/v1/auth/login',
         }),
       }),
+      signOut: builder.mutation<void, void>({
+        invalidatesTags: ['Me'],
+        query: () => ({
+          method: 'POST',
+          url: `v1/auth/logout`,
+        }),
+      }),
       signUp: builder.mutation<User, SignUpArgs>({
         query: body => ({
           body,
-          method: 'GET',
+          method: 'POST',
           url: `v1/auth/sign-up`,
         }),
       }),

@@ -6,18 +6,19 @@ import {
   createBrowserRouter,
 } from 'react-router-dom'
 
-import { Layout } from '@/components/layout/layout'
+import { Layout, useAuthContext } from '@/components/layout/layout'
 import { DecksPage } from '@/pages/decks/decks.page'
 import { SignInPage } from '@/pages/sign-in/sign-in.page'
+import { SignUpPage } from '@/pages/sign-up/sign-up.page'
 
 const publicRoutes: RouteObject[] = [
   {
-    element: <div>login</div>,
-    path: '/login',
-  },
-  {
     element: <SignInPage />,
     path: '/sign-in',
+  },
+  {
+    element: <SignUpPage />,
+    path: '/sign-up',
   },
 ]
 
@@ -29,9 +30,9 @@ const privateRoutes: RouteObject[] = [
 ]
 
 function PrivateRoutes() {
-  const isAuthenticated = true
+  const { isAuthenticated } = useAuthContext()
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/login'} />
+  return isAuthenticated ? <Outlet /> : <Navigate to={'/sign-in'} />
 }
 
 const router = createBrowserRouter([
