@@ -35,7 +35,7 @@ function PrivateRoutes() {
   return isAuthenticated ? <Outlet /> : <Navigate to={'/sign-in'} />
 }
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     children: [
       {
