@@ -1,0 +1,29 @@
+.page {
+  width: 100%;
+}
+.pageTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.filtersWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  width: 100%;
+}
+.inputWrapper,
+.tabsWrapper,
+.sliderWrapper,
+.buttonsWrapper {
+  flex: 0 0 20%;
+  display: flex;
+  justify-content: center;
+}
+.pagination {
+  margin-bottom: 24px;
+}
