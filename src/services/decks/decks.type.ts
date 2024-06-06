@@ -30,6 +30,7 @@ export interface Author {
 export interface GetDecksArgs {
   authorId?: string
   currentPage?: number
+  favoritedBy?: string
   itemsPerPage?: number
   maxCardsCount?: number
   minCardsCount?: number
@@ -44,4 +45,8 @@ export interface CreateDecksArgs {
 export type UpdateDecksArgs = { id: string } & Partial<CreateDecksArgs>
 export type DeleteDecksArgs = {
   id: string
+}
+export type DeckMinMaxCardsResponse = {
+  max: number
+  min: number
 }

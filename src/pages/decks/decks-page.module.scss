@@ -1,6 +1,7 @@
 .page {
   width: 100%;
 }
+
 .pageTitle {
   display: flex;
   align-items: center;
@@ -10,20 +11,41 @@
 
 .filtersWrapper {
   display: flex;
-  justify-content: space-between;
+  gap: 1.5rem;
   align-items: center;
-  margin-bottom: 16px;
-  margin-top: 16px;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.inputWrapper {
+  width: 30%;
+  max-width: 400px;
+}
+
+.sliderWrapper,
+.tabsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20%;
+  max-width: 400px;
+}
+
+.inputWrapper > *,
+.tabsWrapper > *,
+.sliderWrapper > * {
   width: 100%;
 }
-.inputWrapper,
-.tabsWrapper,
-.sliderWrapper,
-.buttonsWrapper {
-  flex: 0 0 20%;
+
+.buttonWrapper {
   display: flex;
-  justify-content: center;
+  justify-content: end;
 }
+
 .pagination {
   margin-bottom: 24px;
 }

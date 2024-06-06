@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { DecksTable } from '@/components/decks/decks-table/decks-table'
@@ -11,7 +11,7 @@ import { Tabs } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import { useDecksPage } from '@/pages/decks/use-decks-page'
 import { useMeQuery } from '@/services/auth/auth.service'
-import { useGetDecksQuery } from '@/services/decks/decks.sevice'
+import { useGetDecksQuery, useGetMinMaxCardsQuery } from '@/services/decks/decks.sevice'
 
 import s from './decks-page.module.scss'
 
@@ -26,15 +26,27 @@ export function DecksPage() {
   const search = searchParams.get('search') ?? ''
   const pageSize = Number(searchParams.get('pageSize')) || 10
   const currentPage = Number(searchParams.get('currentPage')) || 1
-  const maxSliderValue = Number(searchParams.get('max')) || 100
-  const minSliderValue = Number(searchParams.get('min')) || 1
+  const maxCardsCount = Number(searchParams.get('max')) || 100
+  const minCardsCount = Number(searchParams.get('min'))
 
   const handleOnPageChange = (pageNumber: number) => {
-    setSearchParams({ currentPage: pageNumber.toString(), pageSize: pageSize.toString(), search })
+    setSearchParams({
+      currentPage: pageNumber.toString(),
+      max: maxCardsCount.toString(),
+      min: minCardsCount.toString(),
+      pageSize: pageSize.toString(),
+      search,
+    })
   }
 
   const handleOnPageSizeChange = (size: number) => {
-    setSearchParams({ currentPage: '1', pageSize: size.toString(), search })
+    setSearchParams({
+      currentPage: '1',
+      max: maxCardsCount.toString(),
+      min: minCardsCount.toString(),
+      pageSize: size.toString(),
+      search,
+    })
   }
 
   const handleClear = () => {
@@ -52,11 +64,59 @@ export function DecksPage() {
     setSearchParams(searchParams)
   }
 
+  /// Min Max Filter
+  const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
+  const minCardsValue = minMaxCardsData?.min || 0
+  const maxCardsValue = minMaxCardsData?.max || 100
+  const [sliderValue, setSliderValue] = useState<number[]>([minCardsCount, maxCardsCount])
+
+  const handleSliderChange = (value: number[]) => {
+    setSliderValue(value)
+    searchParams.set('min', value[0].toString())
+    searchParams.set('max', value[1].toString())
+    setSearchParams(searchParams)
+  }
+
+  // Tabs filter
+  const [currentTab, setCurrentTab] = useState('all')
+  const handleTabChange = (tabValue: string) => {
+    setCurrentTab(tabValue)
+
+    if (tabValue === 'favorites') {
+      searchParams.set('favoritedBy', currentUserId)
+      searchParams.delete('authorId')
+    } else if (tabValue === 'my') {
+      searchParams.set('authorId', currentUserId)
+      searchParams.delete('favoritedBy')
+    } else {
+      searchParams.delete('favoritedBy')
+      searchParams.delete('authorId')
+    }
+
+    setSearchParams(searchParams)
+  }
+  // Reset filters
+  const resetFilters = () => {
+    setSearchParams({
+      currentPage: '1',
+      max: maxCardsValue.toString(),
+      min: minCardsValue.toString(),
+      pageSize: '10',
+      search: '',
+    })
+    setSliderValue([minCardsValue, maxCardsValue])
+    setCurrentTab('all')
+  }
+
   // Decks
   const { data, error, isLoading } = useGetDecksQuery({
+    authorId: currentTab === 'my' ? currentUserId : '',
     currentPage,
+    favoritedBy: currentTab === 'favorites' ? currentUserId : undefined,
     itemsPerPage: pageSize,
-    name: search,
+    maxCardsCount: sliderValue[1],
+    minCardsCount: sliderValue[0],
+    ...(search ? { name: search } : {}),
   })
 
   if (isLoading) {
@@ -74,7 +134,7 @@ export function DecksPage() {
           <Button variant={'primary'}>{'Create Deck'}</Button>
         </div>
         <div className={s.filtersWrapper}>
-          <div className={s.inputWraper}>
+          <div className={s.inputWrapper}>
             <Input
               clear={handleClear}
               onChange={handleSearchChange}
@@ -84,20 +144,22 @@ export function DecksPage() {
             />
           </div>
           <div className={s.tabsWrapper}>
-            <Tabs tabs={tabs} value={tabs[0].value} />
+            <Tabs onValueChange={handleTabChange} tabs={tabs} value={currentTab} />
           </div>
           <div className={s.sliderWrapper}>
             <Slider
-              max={maxSliderValue}
-              min={minSliderValue}
-              onValueChange={() => {}}
+              max={maxCardsValue}
+              min={minCardsValue}
+              onValueChange={handleSliderChange}
               step={1}
-              value={[2, 50]}
+              value={sliderValue}
             />
           </div>
 
           <div className={s.buttonWrapper}>
-            <Button variant={'secondary'}>{'Reset Filters'} </Button>
+            <Button onClick={resetFilters} variant={'secondary'}>
+              {'Reset Filters'}
+            </Button>
           </div>
         </div>
 
