@@ -28,9 +28,15 @@ const authService = flashcardsApi.injectEndpoints({
       }),
       signOut: builder.mutation<void, void>({
         invalidatesTags: ['Me'],
+        async onQueryStarted(_, { queryFulfilled }) {
+          await queryFulfilled
+
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+        },
         query: () => ({
           method: 'POST',
-          url: `v1/auth/logout`,
+          url: `v2/auth/logout`,
         }),
       }),
       signUp: builder.mutation<User, SignUpArgs>({
@@ -44,4 +50,4 @@ const authService = flashcardsApi.injectEndpoints({
   },
 })
 
-export const { useMeQuery, useSignInMutation, useSignUpMutation } = authService
+export const { useMeQuery, useSignInMutation, useSignOutMutation, useSignUpMutation } = authService

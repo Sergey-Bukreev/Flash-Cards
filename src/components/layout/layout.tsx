@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
-import { Outlet, useOutletContext } from 'react-router-dom'
+import { Outlet, useNavigate, useOutletContext } from 'react-router-dom'
 
 import { Header, HeaderProps } from '@/components/header'
-import { useMeQuery } from '@/services/auth/auth.service'
+import { useMeQuery, useSignOutMutation } from '@/services/auth/auth.service'
 
 import s from './layout.module.scss'
 type AuthContext = {
@@ -16,12 +16,23 @@ export const Layout = () => {
   const { data, isError, isLoading } = useMeQuery()
   const isAuthenticated = !isError && !isLoading
 
+  const [signOut] = useSignOutMutation()
+  const navigate = useNavigate()
+  const handleSignOut = async () => {
+    try {
+      await signOut().unwrap()
+      navigate('/sign-in')
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
+
   return (
     <LayoutPrimitive
       avatar={data?.avatar ?? null}
       email={data?.email ?? ''}
       isAuthenticated={isAuthenticated}
-      onLogout={() => {}}
+      onLogout={handleSignOut}
       userName={data?.name ?? ''}
     >
       <Outlet context={{ isAuthenticated } satisfies AuthContext} />
