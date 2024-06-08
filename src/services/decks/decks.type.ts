@@ -50,3 +50,5 @@ export type DeckMinMaxCardsResponse = {
   max: number
   min: number
 }
+
+export type DeckResponse = Deck

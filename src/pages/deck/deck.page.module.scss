@@ -1,0 +1,17 @@
+.pageTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.titleInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.cover {
+  width: 300px;
+  height: 200px;
+  margin-bottom: 24px;
+}

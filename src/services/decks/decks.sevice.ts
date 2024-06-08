@@ -2,6 +2,7 @@ import {
   CreateDecksArgs,
   Deck,
   DeckMinMaxCardsResponse,
+  DeckResponse,
   DecksListResponse,
   DeleteDecksArgs,
   GetDecksArgs,
@@ -26,6 +27,9 @@ export const decksService = flashcardsApi.injectEndpoints({
           method: 'DELETE',
           url: `v1/decks/${id}`,
         }),
+      }),
+      getDeckById: builder.query<DeckResponse, { id: string }>({
+        query: ({ id }) => `v1/decks/${id}`,
       }),
       getDecks: builder.query<DecksListResponse, GetDecksArgs | void>({
         providesTags: ['Decks'],
@@ -52,6 +56,7 @@ export const decksService = flashcardsApi.injectEndpoints({
 export const {
   useCreateDeckMutation,
   useDeleteDeckMutation,
+  useGetDeckByIdQuery,
   useGetDecksQuery,
   useGetMinMaxCardsQuery,
   useUpdateDeckMutation,
