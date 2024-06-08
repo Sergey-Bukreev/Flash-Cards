@@ -1,3 +1,6 @@
+import { useState } from 'react'
+
+import { CreateDeckModal } from '@/components/decks/create-deck-modal/create-deck-modal'
 import { DecksTable } from '@/components/decks/decks-table/decks-table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
@@ -33,6 +36,14 @@ export function DecksPage() {
     tabs,
   } = useDecksPage()
 
+  const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState(false)
+  const handleOpenModal = () => {
+    setIsOpenAddDeckModal(true)
+  }
+  const handleCloseModal = () => {
+    setIsOpenAddDeckModal(false)
+  }
+
   if (isLoading) {
     return <Typography variant={'h1'}>{'Loading ....'}</Typography>
   }
@@ -45,7 +56,10 @@ export function DecksPage() {
       <div className={s.page}>
         <div className={s.pageTitle}>
           <Typography variant={'h1'}>{'Decks List'}</Typography>
-          <Button variant={'primary'}>{'Create Deck'}</Button>
+          <Button onClick={handleOpenModal} variant={'primary'}>
+            {'Create Deck'}
+          </Button>
+          <CreateDeckModal isOpen={isOpenAddDeckModal} onClose={handleCloseModal} />
         </div>
         <div className={s.filtersWrapper}>
           <div className={s.inputWrapper}>
