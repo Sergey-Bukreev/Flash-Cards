@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { CreateDeckModal } from '@/components/decks/create-deck-modal/create-deck-modal'
 import { DecksTable } from '@/components/decks/decks-table/decks-table'
+import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
@@ -37,11 +38,22 @@ export function DecksPage() {
   } = useDecksPage()
 
   const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState(false)
-  const handleOpenModal = () => {
+  const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState(false)
+  const [deckToDeleteID, setDeckToDeleteID] = useState('')
+  const deckToDeleteName = data?.items?.find(deck => deck.id === deckToDeleteID)?.name
+  const handleOpenAddDeckModal = () => {
     setIsOpenAddDeckModal(true)
   }
-  const handleCloseModal = () => {
+  const handleCloseAddDeckModal = () => {
     setIsOpenAddDeckModal(false)
+  }
+  const handleOpenDeleteDeckModal = (id: string) => {
+    setDeckToDeleteID(id)
+    setIsOpenDeleteDeckModal(true)
+  }
+  const handleCloseDeleteDeckModal = () => {
+    setDeckToDeleteID('')
+    setIsOpenDeleteDeckModal(false)
   }
 
   if (isLoading) {
@@ -56,10 +68,10 @@ export function DecksPage() {
       <div className={s.page}>
         <div className={s.pageTitle}>
           <Typography variant={'h1'}>{'Decks List'}</Typography>
-          <Button onClick={handleOpenModal} variant={'primary'}>
+          <Button onClick={handleOpenAddDeckModal} variant={'primary'}>
             {'Create Deck'}
           </Button>
-          <CreateDeckModal isOpen={isOpenAddDeckModal} onClose={handleCloseModal} />
+          <CreateDeckModal isOpen={isOpenAddDeckModal} onClose={handleCloseAddDeckModal} />
         </div>
         <div className={s.filtersWrapper}>
           <div className={s.inputWrapper}>
@@ -94,8 +106,14 @@ export function DecksPage() {
         <DecksTable
           currentUserId={currentUserId}
           decks={data?.items}
-          onDeleteClick={() => {}}
+          onDeleteClick={handleOpenDeleteDeckModal}
           onEditClick={() => {}}
+        />
+        <DeleteDeckModal
+          id={deckToDeleteID}
+          isOpen={isOpenDeleteDeckModal}
+          name={deckToDeleteName}
+          onClose={handleCloseDeleteDeckModal}
         />
         <div className={s.paginnation}>
           <Pagination
