@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form'
 
+import { fileSchema } from '@/components/common/utils/fileSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 const createDeckFormSchema = z.object({
-  cover: z.string().trim(),
+  cover: fileSchema,
   isPrivate: z.boolean(),
   name: z.string().trim(),
 })
@@ -13,7 +14,7 @@ export type FormValues = z.infer<typeof createDeckFormSchema>
 export const useCreateDeck = () => {
   return useForm<FormValues>({
     defaultValues: {
-      cover: '',
+      cover: null,
       isPrivate: false,
       name: '',
     },
