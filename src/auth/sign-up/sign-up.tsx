@@ -39,7 +39,7 @@ export const SignUp: FC<SignUpProps> = (props: SignUpProps) => {
           {'Already have an account?'}
         </Typography>
         <Typography as={Link} className={s.signInLink} to={'/sign-in'} variant={'link1'}>
-          {'Sign Up'}
+          {'Sign In'}
         </Typography>
       </form>
     </Card>

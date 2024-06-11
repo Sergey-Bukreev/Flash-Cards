@@ -2,10 +2,10 @@ import { FieldValues, UseControllerProps, useController } from 'react-hook-form'
 
 import { Checkbox, CheckboxProps } from '@/components/ui/checkbox'
 
-export type FormCheckboxProps<T extends FieldValues> = { control: any; name: 'rememberMe' } & Omit<
-  CheckboxProps,
-  'checked' | 'onChange'
-> &
+export type FormCheckboxProps<T extends FieldValues> = {
+  control: any
+  name: 'isPrivate' | 'rememberMe'
+} & Omit<CheckboxProps, 'checked' | 'onChange'> &
   UseControllerProps<T>
 export function FormCheckbox<T extends FieldValues>({
   control,

@@ -41,7 +41,7 @@ export const Tabs = (props: TabsProps) => {
         </CustomTabs.TabsList>
         {tabs.map(tab => (
           <CustomTabs.Content className={s.TabsContent} value={tab.value}>
-            {tab.value}
+            {/*{tab.value}*/}
           </CustomTabs.Content>
         ))}
       </CustomTabs.Root>

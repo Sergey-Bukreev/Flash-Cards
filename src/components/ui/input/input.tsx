@@ -71,6 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps<InputType>>(
             {...rest}
             className={clsx(s.input, { [s.error]: errorMessage }, className)}
             onChange={onChangeHandler}
+            placeholder={placeholder}
             ref={r}
             type={isViewPassword && isTypePassword ? 'text' : type}
             value={value}
