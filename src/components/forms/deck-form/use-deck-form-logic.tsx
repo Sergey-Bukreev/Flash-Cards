@@ -1,12 +1,25 @@
 import { useState } from 'react'
 
-import { FormValues, useCreateDeck } from '@/components/forms/create-deck-form/use-create-deck-form'
-
-export const useCreateDeckFormLogic = (onSubmit: (data: FormValues) => void) => {
-  const [downloaded, setDownloaded] = useState<null | string>(null)
+import { FormValues, useCreateDeck } from '@/components/forms/deck-form/use-deck-form'
+type DeckFormDefaultValues = {
+  cover: null | string
+} & Pick<FormValues, 'isPrivate' | 'name'>
+export type DeckFormProps = {
+  defaultValues?: DeckFormDefaultValues
+  onCancel: () => void
+  onSubmit: (data: FormValues) => void
+}
+export const useDeckFormLogic = ({ defaultValues, onSubmit }: DeckFormProps) => {
+  const [downloaded, setDownloaded] = useState<null | string>(defaultValues?.cover || null)
   const [coverError, setCoverError] = useState<null | string>(null)
+  const values = {
+    isPrivate: defaultValues?.isPrivate || false,
+    name: defaultValues?.name || '',
+  }
   const { control, getFieldState, handleSubmit, resetField, setValue, trigger, watch } =
-    useCreateDeck()
+    useCreateDeck(values)
+
+  const fileIsDirty = getFieldState('cover').isDirty
 
   const extraActions = async () => {
     const success = await trigger('cover')
@@ -19,9 +32,11 @@ export const useCreateDeckFormLogic = (onSubmit: (data: FormValues) => void) => 
     }
 
     if (file) {
-      const img = success ? URL.createObjectURL(file) : null
+      const noImage = defaultValues?.cover ?? null
+      const img = success ? URL.createObjectURL(file) : noImage
 
       setDownloaded(img)
+
       if (coverError && !error?.message) {
         setCoverError(null)
       }
@@ -41,8 +56,10 @@ export const useCreateDeckFormLogic = (onSubmit: (data: FormValues) => void) => 
     formData.append('isPrivate', `${data.isPrivate}`)
     const file = watch('cover')
 
-    if (file) {
-      formData.append('cover', file)
+    if (file === null) {
+      formData.append('cover', '')
+    } else if (fileIsDirty && data.cover) {
+      formData.append('cover', data.cover)
     }
     onSubmit(formData as any)
   }

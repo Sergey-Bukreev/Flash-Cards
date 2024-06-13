@@ -4,21 +4,17 @@ import { fileSchema } from '@/components/common/utils/fileSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-const createDeckFormSchema = z.object({
+const DeckFormSchema = z.object({
   cover: fileSchema,
   isPrivate: z.boolean(),
   name: z.string().trim(),
 })
 
-export type FormValues = z.infer<typeof createDeckFormSchema>
-export const useCreateDeck = () => {
+export type FormValues = z.infer<typeof DeckFormSchema>
+export const useCreateDeck = (props: FormValues) => {
   return useForm<FormValues>({
-    defaultValues: {
-      cover: null,
-      isPrivate: false,
-      name: '',
-    },
+    defaultValues: props,
     mode: 'onSubmit',
-    resolver: zodResolver(createDeckFormSchema),
+    resolver: zodResolver(DeckFormSchema),
   })
 }

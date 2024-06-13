@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { CreateDeckModal } from '@/components/decks/create-deck-modal/create-deck-modal'
 import { DecksTable } from '@/components/decks/decks-table/decks-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
+import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
@@ -37,10 +38,16 @@ export function DecksPage() {
     tabs,
   } = useDecksPage()
 
-  const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState(false)
-  const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState(false)
+  const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState<boolean>(false)
+  const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState<boolean>(false)
+  const [isOpenEditDeckModal, setIsOpenEditDeckModal] = useState<boolean>(false)
+  const [deckToEditID, setDeckToEditID] = useState('')
   const [deckToDeleteID, setDeckToDeleteID] = useState('')
   const deckToDeleteName = data?.items?.find(deck => deck.id === deckToDeleteID)?.name
+  const deckToEditName = data?.items?.find(deck => deck.id === deckToEditID)?.name
+  const deckToEditCover = data?.items?.find(deck => deck.id === deckToEditID)?.cover
+  const deckToEditStatus = data?.items?.find(deck => deck.id === deckToEditID)?.isPrivate
+
   const handleOpenAddDeckModal = () => {
     setIsOpenAddDeckModal(true)
   }
@@ -54,6 +61,15 @@ export function DecksPage() {
   const handleCloseDeleteDeckModal = () => {
     setDeckToDeleteID('')
     setIsOpenDeleteDeckModal(false)
+  }
+
+  const handleOpenEditDeckModal = (id: string) => {
+    setDeckToEditID(id)
+    setIsOpenEditDeckModal(true)
+  }
+  const handleCloseEditDeckModal = () => {
+    setDeckToEditID('')
+    setIsOpenEditDeckModal(false)
   }
 
   if (isLoading) {
@@ -107,13 +123,21 @@ export function DecksPage() {
           currentUserId={currentUserId}
           decks={data?.items}
           onDeleteClick={handleOpenDeleteDeckModal}
-          onEditClick={() => {}}
+          onEditClick={handleOpenEditDeckModal}
         />
         <DeleteDeckModal
           id={deckToDeleteID}
           isOpen={isOpenDeleteDeckModal}
           name={deckToDeleteName}
           onClose={handleCloseDeleteDeckModal}
+        />
+        <EditDeckModal
+          cover={deckToEditCover || null}
+          id={deckToEditID}
+          isOpen={isOpenEditDeckModal}
+          isPrivate={deckToEditStatus || false}
+          name={deckToEditName || ''}
+          onClose={handleCloseEditDeckModal}
         />
         <div className={s.paginnation}>
           <Pagination

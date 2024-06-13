@@ -1,20 +1,15 @@
 import { FormCheckbox } from '@/components/controled/form-checkbox'
 import { FromFileLoader } from '@/components/controled/form-file-loader/from-file-loader'
 import { FormInput } from '@/components/controled/form-input'
-import { FormValues } from '@/components/forms/create-deck-form/use-create-deck-form'
-import { useCreateDeckFormLogic } from '@/components/forms/create-deck-form/use-create-deck-form-logic'
+import { DeckFormProps, useDeckFormLogic } from '@/components/forms/deck-form/use-deck-form-logic'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
-import s from './create-deck-form.module.scss'
+import s from './deck-form.module.scss'
 
-export type CreateDeckFormProps = {
-  onCancel: () => void
-  onSubmit: (data: FormValues) => void
-}
-export const CreateDeckForm = ({ onCancel, onSubmit }: CreateDeckFormProps) => {
+export const DeckForm = ({ defaultValues, onCancel, onSubmit }: DeckFormProps) => {
   const { control, coverError, deleteCoverHandler, downloaded, extraActions, handleOnSubmit } =
-    useCreateDeckFormLogic(onSubmit)
+    useDeckFormLogic({ defaultValues, onSubmit } as DeckFormProps)
 
   return (
     <Card className={s.card}>
@@ -45,7 +40,7 @@ export const CreateDeckForm = ({ onCancel, onSubmit }: CreateDeckFormProps) => {
             {'Cancel'}
           </Button>
           <Button type={'submit'} variant={'primary'}>
-            {'Add Deck'}
+            {'Submit'}
           </Button>
         </div>
       </form>

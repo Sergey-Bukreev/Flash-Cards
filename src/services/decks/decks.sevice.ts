@@ -44,7 +44,7 @@ export const decksService = flashcardsApi.injectEndpoints({
       }),
       updateDeck: builder.mutation<Deck, UpdateDecksArgs>({
         invalidatesTags: ['Decks'],
-        query: ({ id, ...body }) => ({
+        query: ({ body, id }) => ({
           body: body,
           method: 'PATCH',
           url: `v1/decks/${id}`,
