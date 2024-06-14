@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { CreateDeckModal } from '@/components/decks/create-deck-modal/create-deck-modal'
 import { DecksTable } from '@/components/decks/decks-table/decks-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
@@ -21,14 +19,29 @@ export function DecksPage() {
     currentTab,
     currentUserId,
     data,
+    deckToDeleteID,
+    deckToDeleteName,
+    deckToEditCover,
+    deckToEditID,
+    deckToEditName,
+    deckToEditStatus,
     error,
     handleClear,
+    handleCloseAddDeckModal,
+    handleCloseDeleteDeckModal,
+    handleCloseEditDeckModal,
     handleOnPageChange,
     handleOnPageSizeChange,
+    handleOpenAddDeckModal,
+    handleOpenDeleteDeckModal,
+    handleOpenEditDeckModal,
     handleSearchChange,
     handleSliderChange,
     handleTabChange,
     isLoading,
+    isOpenAddDeckModal,
+    isOpenDeleteDeckModal,
+    isOpenEditDeckModal,
     maxCardsValue,
     minCardsValue,
     pageSize,
@@ -37,40 +50,6 @@ export function DecksPage() {
     sliderValue,
     tabs,
   } = useDecksPage()
-
-  const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState<boolean>(false)
-  const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState<boolean>(false)
-  const [isOpenEditDeckModal, setIsOpenEditDeckModal] = useState<boolean>(false)
-  const [deckToEditID, setDeckToEditID] = useState('')
-  const [deckToDeleteID, setDeckToDeleteID] = useState('')
-  const deckToDeleteName = data?.items?.find(deck => deck.id === deckToDeleteID)?.name
-  const deckToEditName = data?.items?.find(deck => deck.id === deckToEditID)?.name
-  const deckToEditCover = data?.items?.find(deck => deck.id === deckToEditID)?.cover
-  const deckToEditStatus = data?.items?.find(deck => deck.id === deckToEditID)?.isPrivate
-
-  const handleOpenAddDeckModal = () => {
-    setIsOpenAddDeckModal(true)
-  }
-  const handleCloseAddDeckModal = () => {
-    setIsOpenAddDeckModal(false)
-  }
-  const handleOpenDeleteDeckModal = (id: string) => {
-    setDeckToDeleteID(id)
-    setIsOpenDeleteDeckModal(true)
-  }
-  const handleCloseDeleteDeckModal = () => {
-    setDeckToDeleteID('')
-    setIsOpenDeleteDeckModal(false)
-  }
-
-  const handleOpenEditDeckModal = (id: string) => {
-    setDeckToEditID(id)
-    setIsOpenEditDeckModal(true)
-  }
-  const handleCloseEditDeckModal = () => {
-    setDeckToEditID('')
-    setIsOpenEditDeckModal(false)
-  }
 
   if (isLoading) {
     return <Typography variant={'h1'}>{'Loading ....'}</Typography>
