@@ -1,8 +1,7 @@
-import { useState } from 'react'
-
 import { CreateDeckModal } from '@/components/decks/create-deck-modal/create-deck-modal'
 import { DecksTable } from '@/components/decks/decks-table/decks-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
+import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
@@ -20,14 +19,29 @@ export function DecksPage() {
     currentTab,
     currentUserId,
     data,
+    deckToDeleteID,
+    deckToDeleteName,
+    deckToEditCover,
+    deckToEditID,
+    deckToEditName,
+    deckToEditStatus,
     error,
     handleClear,
+    handleCloseAddDeckModal,
+    handleCloseDeleteDeckModal,
+    handleCloseEditDeckModal,
     handleOnPageChange,
     handleOnPageSizeChange,
+    handleOpenAddDeckModal,
+    handleOpenDeleteDeckModal,
+    handleOpenEditDeckModal,
     handleSearchChange,
     handleSliderChange,
     handleTabChange,
     isLoading,
+    isOpenAddDeckModal,
+    isOpenDeleteDeckModal,
+    isOpenEditDeckModal,
     maxCardsValue,
     minCardsValue,
     pageSize,
@@ -36,25 +50,6 @@ export function DecksPage() {
     sliderValue,
     tabs,
   } = useDecksPage()
-
-  const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState(false)
-  const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState(false)
-  const [deckToDeleteID, setDeckToDeleteID] = useState('')
-  const deckToDeleteName = data?.items?.find(deck => deck.id === deckToDeleteID)?.name
-  const handleOpenAddDeckModal = () => {
-    setIsOpenAddDeckModal(true)
-  }
-  const handleCloseAddDeckModal = () => {
-    setIsOpenAddDeckModal(false)
-  }
-  const handleOpenDeleteDeckModal = (id: string) => {
-    setDeckToDeleteID(id)
-    setIsOpenDeleteDeckModal(true)
-  }
-  const handleCloseDeleteDeckModal = () => {
-    setDeckToDeleteID('')
-    setIsOpenDeleteDeckModal(false)
-  }
 
   if (isLoading) {
     return <Typography variant={'h1'}>{'Loading ....'}</Typography>
@@ -107,13 +102,21 @@ export function DecksPage() {
           currentUserId={currentUserId}
           decks={data?.items}
           onDeleteClick={handleOpenDeleteDeckModal}
-          onEditClick={() => {}}
+          onEditClick={handleOpenEditDeckModal}
         />
         <DeleteDeckModal
           id={deckToDeleteID}
           isOpen={isOpenDeleteDeckModal}
           name={deckToDeleteName}
           onClose={handleCloseDeleteDeckModal}
+        />
+        <EditDeckModal
+          cover={deckToEditCover || null}
+          id={deckToEditID}
+          isOpen={isOpenEditDeckModal}
+          isPrivate={deckToEditStatus || false}
+          name={deckToEditName || ''}
+          onClose={handleCloseEditDeckModal}
         />
         <div className={s.paginnation}>
           <Pagination

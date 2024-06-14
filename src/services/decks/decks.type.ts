@@ -42,7 +42,10 @@ export interface CreateDecksArgs {
   isPrivate?: boolean
   name: string
 }
-export type UpdateDecksArgs = { id: string } & Partial<CreateDecksArgs>
+export type UpdateDecksArgs = {
+  body: Partial<CreateDecksArgs>
+  id: string
+}
 export type DeleteDecksArgs = {
   id: string
 }

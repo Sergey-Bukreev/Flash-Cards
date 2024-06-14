@@ -4,31 +4,69 @@ import { useSearchParams } from 'react-router-dom'
 import { useDebounce } from '@/components/common/hooks/use-debounce'
 import { useMeQuery } from '@/services/auth/auth.service'
 import { useGetDecksQuery, useGetMinMaxCardsQuery } from '@/services/decks/decks.sevice'
+import { DecksListResponse } from '@/services/decks/decks.type'
 
-export const useDecksPage = () => {
-  const tabs = [
-    { name: 'All Decks', value: 'all' },
-    { name: 'My Decks', value: 'my' },
-    { name: 'Favorite', value: 'favorites' },
-  ]
+interface DecksPageData {
+  currentPage: number
+  currentTab: string
+  currentUserId: string
+  data: DecksListResponse | undefined
+  deckToDeleteID: string
+  deckToDeleteName?: string
+  deckToEditCover?: string
+  deckToEditID: string
+  deckToEditName?: string
+  deckToEditStatus?: boolean
+  error: any
+  handleClear: () => void
+  handleCloseAddDeckModal: () => void
+  handleCloseDeleteDeckModal: () => void
+  handleCloseEditDeckModal: () => void
+  handleOnPageChange: (pageNumber: number) => void
+  handleOnPageSizeChange: (size: number) => void
+  handleOpenAddDeckModal: () => void
+  handleOpenDeleteDeckModal: (id: string) => void
+  handleOpenEditDeckModal: (id: string) => void
+  handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSliderChange: (value: number[]) => void
+  handleTabChange: (tabValue: string) => void
+  isLoading: boolean
+  isOpenAddDeckModal: boolean
+  isOpenDeleteDeckModal: boolean
+  isOpenEditDeckModal: boolean
+  maxCardsValue: number
+  minCardsValue: number
+  pageSize: number
+  resetFilters: () => void
+  search: string
+  sliderValue: number[]
+  tabs: { name: string; value: string }[]
+}
+const tabs = [
+  { name: 'All Decks', value: 'all' },
+  { name: 'My Decks', value: 'my' },
+  { name: 'Favorite', value: 'favorites' },
+]
+
+export const useDecksPage = (): DecksPageData => {
   const { data: me } = useMeQuery()
   const currentUserId = me ? me.id : ''
 
   const [searchParams, setSearchParams] = useSearchParams()
   const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
 
-  const search = searchParams.get('search') ?? ''
+  const search = searchParams.get('search') || ''
   const debouncedSearch = useDebounce(search, 500)
   const pageSize = Number(searchParams.get('pageSize')) || 10
   const currentPage = Number(searchParams.get('currentPage')) || 1
-  const maxCardsCount = Number(searchParams.get('max')) || 100
+  const maxCardsCount = Number(searchParams.get('max')) || 35
   const minCardsCount = Number(searchParams.get('min'))
   const minCardsValue = minMaxCardsData?.min || 0
   const maxCardsValue = minMaxCardsData?.max || 100
 
   const [sliderValue, setSliderValue] = useState<number[]>([minCardsCount, maxCardsCount])
   const debouncedSliderValue = useDebounce(sliderValue, 500)
-  const [currentTab, setCurrentTab] = useState('all')
+  const [currentTab, setCurrentTab] = useState<string>('all')
 
   const { data, error, isLoading } = useGetDecksQuery({
     authorId: currentTab === 'my' ? currentUserId : '',
@@ -39,25 +77,36 @@ export const useDecksPage = () => {
     minCardsCount: debouncedSliderValue[0],
     ...(debouncedSearch ? { name: debouncedSearch } : {}),
   })
+  const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState<boolean>(false)
+  const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState<boolean>(false)
+  const [isOpenEditDeckModal, setIsOpenEditDeckModal] = useState<boolean>(false)
+  const [deckToEditID, setDeckToEditID] = useState<string>('')
+  const [deckToDeleteID, setDeckToDeleteID] = useState<string>('')
+  const deckToDeleteName = data?.items?.find(deck => deck.id === deckToDeleteID)?.name
+  const deckToEditName = data?.items?.find(deck => deck.id === deckToEditID)?.name
+  const deckToEditCover = data?.items?.find(deck => deck.id === deckToEditID)?.cover
+  const deckToEditStatus = data?.items?.find(deck => deck.id === deckToEditID)?.isPrivate
 
   const handleOnPageChange = (pageNumber: number) => {
-    setSearchParams({
+    setSearchParams(params => ({
+      ...params,
       currentPage: pageNumber.toString(),
       max: maxCardsCount.toString(),
       min: minCardsCount.toString(),
       pageSize: pageSize.toString(),
       search,
-    })
+    }))
   }
 
   const handleOnPageSizeChange = (size: number) => {
-    setSearchParams({
+    setSearchParams(params => ({
+      ...params,
       currentPage: '1',
       max: maxCardsCount.toString(),
       min: minCardsCount.toString(),
       pageSize: size.toString(),
       search,
-    })
+    }))
   }
 
   const handleClear = () => {
@@ -111,19 +160,62 @@ export const useDecksPage = () => {
     setCurrentTab('all')
   }
 
+  const handleOpenAddDeckModal = () => {
+    setIsOpenAddDeckModal(true)
+  }
+
+  const handleCloseAddDeckModal = () => {
+    setIsOpenAddDeckModal(false)
+  }
+
+  const handleOpenDeleteDeckModal = (id: string) => {
+    setDeckToDeleteID(id)
+    setIsOpenDeleteDeckModal(true)
+  }
+
+  const handleCloseDeleteDeckModal = () => {
+    setDeckToDeleteID('')
+    setIsOpenDeleteDeckModal(false)
+  }
+
+  const handleOpenEditDeckModal = (id: string) => {
+    setDeckToEditID(id)
+    setIsOpenEditDeckModal(true)
+  }
+
+  const handleCloseEditDeckModal = () => {
+    setDeckToEditID('')
+    setIsOpenEditDeckModal(false)
+  }
+
   return {
     currentPage,
     currentTab,
     currentUserId,
     data,
+    deckToDeleteID,
+    deckToDeleteName,
+    deckToEditCover,
+    deckToEditID,
+    deckToEditName,
+    deckToEditStatus,
     error,
     handleClear,
+    handleCloseAddDeckModal,
+    handleCloseDeleteDeckModal,
+    handleCloseEditDeckModal,
     handleOnPageChange,
     handleOnPageSizeChange,
+    handleOpenAddDeckModal,
+    handleOpenDeleteDeckModal,
+    handleOpenEditDeckModal,
     handleSearchChange,
     handleSliderChange,
     handleTabChange,
     isLoading,
+    isOpenAddDeckModal,
+    isOpenDeleteDeckModal,
+    isOpenEditDeckModal,
     maxCardsValue,
     minCardsValue,
     pageSize,

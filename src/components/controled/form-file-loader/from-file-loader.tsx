@@ -58,12 +58,18 @@ export const FromFileLoader = ({
       )}
       <div className={s.previewControls}>
         {preview && (
-          <Button className={s.loader} fullWidth onClick={deleteHandler} variant={'secondary'}>
+          <Button
+            className={s.loader}
+            fullWidth
+            onClick={deleteHandler}
+            type={'button'}
+            variant={'secondary'}
+          >
             <DeleteIcon className={s.icon} />
             {'Delete Cover'}
           </Button>
         )}
-        <FileLoader className={s.loader} onChange={changeHandler} {...rest}>
+        <FileLoader className={s.loader} onChange={changeHandler} type={'button'} {...rest}>
           <ImageIcon className={s.icon} />
           {preview ? 'Change Cover' : 'Upload Cover'}
         </FileLoader>

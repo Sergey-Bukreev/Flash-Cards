@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { MemoryRouter } from 'react-router-dom'
 
-import { CreateDeckForm } from '@/components/forms/create-deck-form/create-deck-form'
+import { DeckForm } from '@/components/forms/deck-form/deck-form'
 
-const meta: Meta<typeof CreateDeckForm> = {
-  component: CreateDeckForm,
+const meta: Meta<typeof DeckForm> = {
+  component: DeckForm,
   decorators: [
     Story => (
       <MemoryRouter>
@@ -14,7 +14,7 @@ const meta: Meta<typeof CreateDeckForm> = {
     ),
   ],
   tags: ['autodocs'],
-  title: 'Components/Forms/CreateDeckForm',
+  title: 'Components/Forms/DeckForm',
 }
 
 export default meta
