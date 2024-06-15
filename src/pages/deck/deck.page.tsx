@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { DeckDropDown } from '@/components/deck/deck-drop-down'
 import { CardsTable } from '@/components/decks/cards-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
 import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
@@ -11,8 +12,6 @@ import { Typography } from '@/components/ui/typography'
 import { useDeckPage } from '@/pages/deck/use-deck.page'
 
 import s from './deck.page.module.scss'
-
-import { DeckDropDown } from '../../components/deck/deck-drop-down'
 
 export const DeckPage: React.FC = () => {
   const {
@@ -52,21 +51,35 @@ export const DeckPage: React.FC = () => {
             />
           )}
         </div>
-        <Button as={Link} to={`/decks/${deckId}/learn`}>
-          {'Learn'}
-        </Button>
+        {isMyDeck ? (
+          <Button variant={'primary'}>{'Add New Card'}</Button>
+        ) : (
+          <Button as={Link} to={`/decks/${deckId}/learn`}>
+            {'Learn'}
+          </Button>
+        )}
       </div>
+      {deckData?.cardsCount !== 0 ? (
+        <>
+          <Input
+            clear={handleClear}
+            onChange={handleSearchChange}
+            placeholder={'Search Cards'}
+            type={'search'}
+            value={search}
+          />
+          <CardsTable cards={cardsData?.items} />
+        </>
+      ) : (
+        <div>
+          <Typography className={s.message} variant={'h2'}>
+            {isMyDeck
+              ? 'This Deck is empty. Click add new card to fill this pack'
+              : 'This Deck is empty.'}
+          </Typography>
+        </div>
+      )}
 
-      {deckData?.cover && <img alt={'Deck cover'} className={s.cover} src={deckData?.cover} />}
-
-      <Input
-        clear={handleClear}
-        onChange={handleSearchChange}
-        placeholder={'Search Cards'}
-        type={'search'}
-        value={search}
-      />
-      <CardsTable cards={cardsData?.items} />
       <EditDeckModal
         cover={deckData?.cover || null}
         id={deckId || ''}
