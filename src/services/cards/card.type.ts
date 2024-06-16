@@ -18,7 +18,13 @@ export type Card = {
   updated: string
   userId: string
 }
-export type CardsParams = {
-  answer?: string
-  question?: string
+export type CardParams = {
+  answer: string
+  answerImg?: string
+  answerVideo?: string
+  question: string
+  questionImg?: string
+  questionVideo?: string
 } | void
+
+export type CardResponse = Omit<Card, 'userId'>

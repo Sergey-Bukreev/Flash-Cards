@@ -1,9 +1,17 @@
-import { CardsParams, CardsResponse } from '@/services/cards/card.type'
+import { CardParams, CardResponse, CardsResponse } from '@/services/cards/card.type'
 import { flashcardsApi } from '@/services/flashcards-api'
 
 export const cardService = flashcardsApi.injectEndpoints({
   endpoints: builder => ({
-    getCards: builder.query<CardsResponse, { id: string; params: CardsParams }>({
+    createCard: builder.mutation<CardResponse, { body: CardParams; id: string }>({
+      invalidatesTags: ['Cards'],
+      query: ({ body, id }) => ({
+        body: body,
+        method: 'POST',
+        url: `v1/decks/${id}/cards`,
+      }),
+    }),
+    getCards: builder.query<CardsResponse, { id: string; params: CardParams }>({
       providesTags: ['Cards'],
       query: ({ id, params }) => ({
         method: 'GET',
@@ -14,4 +22,4 @@ export const cardService = flashcardsApi.injectEndpoints({
   }),
 })
 
-export const { useGetCardsQuery } = cardService
+export const { useCreateCardMutation, useGetCardsQuery } = cardService

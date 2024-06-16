@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { DeleteIcon } from '@/components/ui/drop-down/icons/delete-icon'
@@ -21,6 +21,7 @@ export const DecksTable = (props: DecksTableProps) => {
   const { currentUserId, decks, onDeleteClick, onEditClick } = props
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
+  const navigate = useNavigate()
 
   return (
     <CustomTable.Root>
@@ -30,6 +31,7 @@ export const DecksTable = (props: DecksTableProps) => {
           <CustomTable.HeadCell>{'Card'}</CustomTable.HeadCell>
           <CustomTable.HeadCell>{'Last Updated'}</CustomTable.HeadCell>
           <CustomTable.HeadCell>{'Create by'}</CustomTable.HeadCell>
+          <CustomTable.HeadCell></CustomTable.HeadCell>
         </CustomTable.Row>
       </CustomTable.Head>
       <CustomTable.Body>
@@ -49,21 +51,36 @@ export const DecksTable = (props: DecksTableProps) => {
               <CustomTable.DataCell>{deck.cardsCount}</CustomTable.DataCell>
               <CustomTable.DataCell>{updateAt}</CustomTable.DataCell>
               <CustomTable.DataCell>{deck.author.name}</CustomTable.DataCell>
-              <CustomTable.DataCell>
+              <CustomTable.DataCell className={s.actions}>
                 <div className={s.iconsWrapper}>
-                  <Button as={Link} to={`/decks/${deck.id}/learn`} variant={'icon'}>
-                    <PlayIcon />
+                  <Button
+                    className={s.button}
+                    disabled={deck.cardsCount === 0}
+                    onClick={() => navigate(`/decks/${deck.id}/learn`)}
+                    variant={'icon'}
+                  >
+                    <PlayIcon disabled={deck.cardsCount === 0} height={20} width={20} />
                   </Button>
-                  {deck.author.id === currentUserId && (
-                    <>
-                      <Button onClick={handleEditClick(deck.id)} variant={'icon'}>
-                        <EditIcon />
-                      </Button>
-                      <Button onClick={handleDeleteClick(deck.id)} variant={'icon'}>
-                        <DeleteIcon />
-                      </Button>
-                    </>
-                  )}
+                  <Button
+                    className={s.button}
+                    disabled={currentUserId !== deck.author.id}
+                    onClick={handleEditClick(deck.id)}
+                    variant={'icon'}
+                  >
+                    <EditIcon disabled={currentUserId !== deck.author.id} height={20} width={20} />
+                  </Button>
+                  <Button
+                    className={s.button}
+                    disabled={currentUserId !== deck.author.id}
+                    onClick={handleDeleteClick(deck.id)}
+                    variant={'icon'}
+                  >
+                    <DeleteIcon
+                      disabled={currentUserId !== deck.author.id}
+                      height={20}
+                      width={20}
+                    />
+                  </Button>
                 </div>
               </CustomTable.DataCell>
             </CustomTable.Row>

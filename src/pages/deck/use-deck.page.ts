@@ -15,13 +15,16 @@ interface DeckPageData {
   deckId: string | undefined
   error: any
   handleClear: () => void
+  handleCloseAddCardModal: () => void
   handleCloseDeleteDeckModal: () => void
   handleCloseEditDeckModal: () => void
+  handleOpenAddCardModal: () => void
   handleOpenDeleteDeckModal: () => void
   handleOpenEditDeckModal: () => void
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
   isMyDeck: boolean
+  isOpenAddCardModal: boolean
   isOpenDeleteDeckModal: boolean
   isOpenEditDeckModal: boolean
   search: string
@@ -31,6 +34,8 @@ export const useDeckPage = (): DeckPageData => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [isOpenEditDeckModal, setIsOpenEditDeckModal] = useState<boolean>(false)
   const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState<boolean>(false)
+
+  const [isOpenAddCardModal, setIsOpenAddCardModal] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const { deckId } = useParams()
@@ -47,6 +52,7 @@ export const useDeckPage = (): DeckPageData => {
   } = useGetCardsQuery({
     id: deckId || '',
     params: {
+      answer: '',
       question: useDebounce(searchParams.get('search') || '', 500),
     },
   })
@@ -90,19 +96,31 @@ export const useDeckPage = (): DeckPageData => {
     refetchDeck()
   }
 
+  const handleOpenAddCardModal = () => {
+    setIsOpenAddCardModal(true)
+  }
+  const handleCloseAddCardModal = () => {
+    setIsOpenAddCardModal(false)
+    refetchCards()
+    refetchDeck()
+  }
+
   return {
     cardsData,
     deckData,
     deckId,
     error,
     handleClear,
+    handleCloseAddCardModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
+    handleOpenAddCardModal,
     handleOpenDeleteDeckModal,
     handleOpenEditDeckModal,
     handleSearchChange,
     isLoading,
     isMyDeck,
+    isOpenAddCardModal,
     isOpenDeleteDeckModal,
     isOpenEditDeckModal,
     search: searchParams.get('search') || '',
