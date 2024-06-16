@@ -1,6 +1,6 @@
 import { CustomTable } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
-import { Card } from '@/services/decks/decks.type'
+import { Card } from '@/services/cards/card.type'
 
 export type CardsTableProps = {
   cards: Card[] | undefined

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { CreateCardModal } from '@/components/deck/create-card-modal'
 import { DeckDropDown } from '@/components/deck/deck-drop-down'
 import { CardsTable } from '@/components/decks/cards-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
@@ -20,13 +21,16 @@ export const DeckPage: React.FC = () => {
     deckId,
     error,
     handleClear,
+    handleCloseAddCardModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
+    handleOpenAddCardModal,
     handleOpenDeleteDeckModal,
     handleOpenEditDeckModal,
     handleSearchChange,
     isLoading,
     isMyDeck,
+    isOpenAddCardModal,
     isOpenDeleteDeckModal,
     isOpenEditDeckModal,
     search,
@@ -52,7 +56,9 @@ export const DeckPage: React.FC = () => {
           )}
         </div>
         {isMyDeck ? (
-          <Button variant={'primary'}>{'Add New Card'}</Button>
+          <Button onClick={handleOpenAddCardModal} variant={'primary'}>
+            {'Add New Card'}
+          </Button>
         ) : (
           <Button as={Link} to={`/decks/${deckId}/learn`}>
             {'Learn'}
@@ -93,6 +99,11 @@ export const DeckPage: React.FC = () => {
         isOpen={isOpenDeleteDeckModal}
         name={deckData?.name}
         onClose={handleCloseDeleteDeckModal}
+      />
+      <CreateCardModal
+        id={deckId || ''}
+        isOpen={isOpenAddCardModal}
+        onClose={handleCloseAddCardModal}
       />
     </Page>
   )

@@ -10,17 +10,16 @@ import { CardFormProps, useCardFormLogic } from './use-card-form-logic'
 
 export const CardForm = ({ defaultValues, onCancel, onSubmit }: CardFormProps) => {
   const {
-    answerImg,
-    answerImgError,
     control,
     deleteAnswerImgHandler,
     deleteQuestionImgHandler,
+    errorData,
+    extraActions,
     handleOnSubmit,
     handleSetVariant,
     options,
     pictureVariant,
-    questionImg,
-    questionImgError,
+    previewData,
     variant,
   } = useCardFormLogic({
     defaultValues,
@@ -44,10 +43,11 @@ export const CardForm = ({ defaultValues, onCancel, onSubmit }: CardFormProps) =
           <FromFileLoader
             control={control}
             deleteCoverHandler={deleteQuestionImgHandler}
-            errorMessage={questionImgError}
+            errorMessage={errorData.questionImg.text}
+            extraActions={extraActions('questionImg')}
             fullWidth
-            name={'question'}
-            preview={questionImg}
+            name={'questionImg'}
+            preview={previewData.questionImg.picture}
             variant={'secondary'}
           />
         )}
@@ -58,10 +58,11 @@ export const CardForm = ({ defaultValues, onCancel, onSubmit }: CardFormProps) =
           <FromFileLoader
             control={control}
             deleteCoverHandler={deleteAnswerImgHandler}
-            errorMessage={answerImgError}
+            errorMessage={errorData.answerImg.text}
+            extraActions={extraActions('answerImg')}
             fullWidth
-            name={'answer'}
-            preview={answerImg}
+            name={'answerImg'}
+            preview={previewData.answerImg.picture}
             variant={'secondary'}
           />
         )}

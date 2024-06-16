@@ -55,8 +55,8 @@ export const useCardFormLogic = ({ defaultValues, onSubmit }: CardFormProps) => 
     }
 
     if (file) {
-      const badCase = defaultValues?.[name] ?? null
-      const img = success ? URL.createObjectURL(file) : badCase
+      const noImage = defaultValues?.[name] ?? null
+      const img = success ? URL.createObjectURL(file) : noImage
 
       previewData[name].set(img)
 
@@ -105,18 +105,16 @@ export const useCardFormLogic = ({ defaultValues, onSubmit }: CardFormProps) => 
   const handleOnSubmit = handleSubmit(sendHandler)
 
   return {
-    answerImg,
-    answerImgError,
     control,
     deleteAnswerImgHandler,
     deleteQuestionImgHandler,
+    errorData,
     extraActions,
     handleOnSubmit,
     handleSetVariant,
     options,
     pictureVariant,
-    questionImg,
-    questionImgError,
+    previewData,
     variant,
   }
 }
