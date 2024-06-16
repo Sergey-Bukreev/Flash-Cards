@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { CreateCardModal } from '@/components/deck/create-card-modal'
 import { DeckDropDown } from '@/components/deck/deck-drop-down'
+import { DeleteCardModal } from '@/components/deck/delete-card-modal/delete-card-modal'
 import { CardsTable } from '@/components/decks/cards-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
 import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
@@ -16,23 +17,29 @@ import s from './deck.page.module.scss'
 
 export const DeckPage: React.FC = () => {
   const {
+    cardForDeleteId,
     cardsData,
     deckData,
     deckId,
     error,
     handleClear,
     handleCloseAddCardModal,
+    handleCloseDeleteCardModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
     handleOpenAddCardModal,
+    handleOpenDeleteCardModal,
     handleOpenDeleteDeckModal,
     handleOpenEditDeckModal,
     handleSearchChange,
     isLoading,
     isMyDeck,
     isOpenAddCardModal,
+    isOpenDeleteCardModal,
     isOpenDeleteDeckModal,
     isOpenEditDeckModal,
+    nameCardForDelete,
+    ownerId,
     search,
   } = useDeckPage()
 
@@ -74,7 +81,12 @@ export const DeckPage: React.FC = () => {
             type={'search'}
             value={search}
           />
-          <CardsTable cards={cardsData?.items} />
+          <CardsTable
+            cards={cardsData?.items}
+            currentUserId={ownerId}
+            onDeleteClick={handleOpenDeleteCardModal}
+            onEditClick={() => {}}
+          />
         </>
       ) : (
         <div>
@@ -104,6 +116,12 @@ export const DeckPage: React.FC = () => {
         id={deckId || ''}
         isOpen={isOpenAddCardModal}
         onClose={handleCloseAddCardModal}
+      />
+      <DeleteCardModal
+        id={cardForDeleteId || ''}
+        isOpen={isOpenDeleteCardModal}
+        name={nameCardForDelete}
+        onClose={handleCloseDeleteCardModal}
       />
     </Page>
   )
