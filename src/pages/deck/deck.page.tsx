@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { CreateCardModal } from '@/components/deck/create-card-modal'
 import { DeckDropDown } from '@/components/deck/deck-drop-down'
 import { DeleteCardModal } from '@/components/deck/delete-card-modal/delete-card-modal'
+import { EditCardModal } from '@/components/deck/edit-card-modal/edit-card-modal'
 import { CardsTable } from '@/components/decks/cards-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
 import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
@@ -17,7 +18,10 @@ import s from './deck.page.module.scss'
 
 export const DeckPage: React.FC = () => {
   const {
+    answerForEdit,
+    answerImgForEdit,
     cardForDeleteId,
+    cardForEditId,
     cardsData,
     deckData,
     deckId,
@@ -26,10 +30,12 @@ export const DeckPage: React.FC = () => {
     handleCloseAddCardModal,
     handleCloseDeleteCardModal,
     handleCloseDeleteDeckModal,
+    handleCloseEditCardModal,
     handleCloseEditDeckModal,
     handleOpenAddCardModal,
     handleOpenDeleteCardModal,
     handleOpenDeleteDeckModal,
+    handleOpenEditCardModal,
     handleOpenEditDeckModal,
     handleSearchChange,
     isLoading,
@@ -37,9 +43,12 @@ export const DeckPage: React.FC = () => {
     isOpenAddCardModal,
     isOpenDeleteCardModal,
     isOpenDeleteDeckModal,
+    isOpenEditCardModal,
     isOpenEditDeckModal,
     nameCardForDelete,
     ownerId,
+    questionForEdit,
+    questionImgForEdit,
     search,
   } = useDeckPage()
 
@@ -85,7 +94,7 @@ export const DeckPage: React.FC = () => {
             cards={cardsData?.items}
             currentUserId={ownerId}
             onDeleteClick={handleOpenDeleteCardModal}
-            onEditClick={() => {}}
+            onEditClick={handleOpenEditCardModal}
           />
         </>
       ) : (
@@ -122,6 +131,15 @@ export const DeckPage: React.FC = () => {
         isOpen={isOpenDeleteCardModal}
         name={nameCardForDelete}
         onClose={handleCloseDeleteCardModal}
+      />
+      <EditCardModal
+        answer={answerForEdit || ''}
+        answerImg={answerImgForEdit || ''}
+        id={cardForEditId || ''}
+        isOpen={isOpenEditCardModal}
+        onClose={handleCloseEditCardModal}
+        question={questionForEdit || ''}
+        questionImg={questionImgForEdit || ''}
       />
     </Page>
   )
