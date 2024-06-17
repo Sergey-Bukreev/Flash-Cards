@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { DeleteIcon } from '@/components/ui/drop-down/icons/delete-icon'
 import { EditIcon } from '@/components/ui/drop-down/icons/edit-icon'
+import { Rating } from '@/components/ui/rating'
 import { CustomTable } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { Card } from '@/services/cards/card.type'
@@ -49,7 +50,7 @@ export const CardsTable = ({
                 <Typography variant={'body2'}>{updateAt}</Typography>
               </CustomTable.DataCell>
               <CustomTable.DataCell>
-                <Typography variant={'body2'}>{card.grade}</Typography>
+                <Rating selectedGrade={card.grade} />
               </CustomTable.DataCell>
               <CustomTable.DataCell>
                 <div className={s.iconsWrapper}>
