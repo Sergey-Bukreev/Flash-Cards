@@ -4,7 +4,7 @@ import { RadioGroup, RadioGroupProps } from '@/components/ui/radio-group/radio-g
 
 type FormRadioGroupProps<T extends FieldValues> = {
   control: any
-  name: any
+  name: 'grade'
 } & Omit<RadioGroupProps, 'onValueChange' | 'value'> &
   UseControllerProps<T>
 
@@ -14,12 +14,14 @@ export function FormRadioGroup<T extends FieldValues>({
   ...rest
 }: FormRadioGroupProps<T>) {
   const {
-    field,
+    field: { onChange, value },
     fieldState: { error },
   } = useController({
     control,
     name,
   })
 
-  return <RadioGroup errorMessage={error?.message} {...rest} {...field} />
+  return (
+    <RadioGroup errorMessage={error?.message} onValueChange={onChange} value={value} {...rest} />
+  )
 }

@@ -1,0 +1,21 @@
+.starIcon {
+  cursor: pointer;
+  fill: none;
+  stroke: var(--color-warning-300);
+  transition: fill 0.2s;
+  margin: 0.2rem;
+}
+
+.starIcon path {
+  fill: transparent;
+  stroke-width: 2px;
+}
+
+.starIcon.hovered {
+  fill: var(--color-warning-300);
+}
+
+.starIcon.hovered path {
+  fill: var(--color-warning-300);
+  stroke: none;
+}
