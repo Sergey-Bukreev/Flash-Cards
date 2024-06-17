@@ -18,6 +18,7 @@ export const useCardFormLogic = ({ defaultValues, onSubmit }: CardFormProps) => 
     answer: defaultValues?.answer || '',
     question: defaultValues?.question || '',
   }
+
   const isImageVariant = defaultValues?.answerImg || defaultValues?.questionImg
   const [questionImg, setQuestionImg] = useState(defaultValues?.questionImg || null)
   const [questionImgError, setQuestionImgError] = useState<null | string>(null)
@@ -38,11 +39,6 @@ export const useCardFormLogic = ({ defaultValues, onSubmit }: CardFormProps) => 
   }
   const { control, getFieldState, handleSubmit, resetField, setValue, trigger, watch } =
     useCardForm(values)
-
-  const questionFile = watch('questionImg')
-  const answerFile = watch('answerImg')
-  const questionImgIsDirty = getFieldState('questionImg').isDirty
-  const answerImgIsDirty = getFieldState('answerImg').isDirty
 
   const extraActions = (name: 'answerImg' | 'questionImg') => async () => {
     const success = await trigger(name)
@@ -70,12 +66,12 @@ export const useCardFormLogic = ({ defaultValues, onSubmit }: CardFormProps) => 
     value ? setVariant(value) : setVariant('')
   }
   const deleteQuestionImgHandler = () => {
-    setValue('question', '')
+    setValue('questionImg', null)
     setQuestionImg(null)
     setQuestionImgError(null)
   }
   const deleteAnswerImgHandler = () => {
-    setValue('answer', '')
+    setValue('answerImg', null)
     setAnswerImg(null)
     setAnswerImgError(null)
   }
@@ -85,22 +81,10 @@ export const useCardFormLogic = ({ defaultValues, onSubmit }: CardFormProps) => 
 
     formData.append('question', data.question)
     formData.append('answer', data.answer)
+    formData.append('questionImg', data.questionImg ?? '')
+    formData.append('answerImg', data.answerImg ?? '')
 
-    if (isImageVariant) {
-      if (questionFile === null) {
-        formData.append('questionImg', '')
-      } else if (questionImgIsDirty && data.questionImg) {
-        formData.append('questionImg', data.questionImg)
-      }
-
-      if (answerFile === null) {
-        formData.append('answerImg', '')
-      } else if (answerImgIsDirty && data.answerImg) {
-        formData.append('answerImg', data.answerImg)
-      }
-    }
-
-    onSubmit(formData as any)
+    onSubmit(formData as unknown as FormValues)
   }
   const handleOnSubmit = handleSubmit(sendHandler)
 

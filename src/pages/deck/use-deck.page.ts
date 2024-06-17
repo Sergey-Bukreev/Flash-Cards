@@ -10,7 +10,10 @@ import { useGetDeckByIdQuery } from '@/services/decks/decks.sevice'
 import { DeckResponse } from '@/services/decks/decks.type'
 
 interface DeckPageData {
+  answerForEdit: string | undefined
+  answerImgForEdit: null | string | undefined
   cardForDeleteId: null | string
+  cardForEditId: null | string
   cardsData: CardsResponse | undefined
   deckData: DeckResponse | undefined
   deckId: string | undefined
@@ -19,10 +22,12 @@ interface DeckPageData {
   handleCloseAddCardModal: () => void
   handleCloseDeleteCardModal: () => void
   handleCloseDeleteDeckModal: () => void
+  handleCloseEditCardModal: () => void
   handleCloseEditDeckModal: () => void
   handleOpenAddCardModal: () => void
   handleOpenDeleteCardModal: (id: string) => void
   handleOpenDeleteDeckModal: () => void
+  handleOpenEditCardModal: (id: string) => void
   handleOpenEditDeckModal: () => void
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
@@ -30,9 +35,12 @@ interface DeckPageData {
   isOpenAddCardModal: boolean
   isOpenDeleteCardModal: boolean
   isOpenDeleteDeckModal: boolean
+  isOpenEditCardModal: boolean
   isOpenEditDeckModal: boolean
   nameCardForDelete: string | undefined
   ownerId: string
+  questionForEdit: string | undefined
+  questionImgForEdit: null | string | undefined
   search: string
 }
 
@@ -45,6 +53,9 @@ export const useDeckPage = (): DeckPageData => {
 
   const [isOpenAddCardModal, setIsOpenAddCardModal] = useState<boolean>(false)
   const [isOpenDeleteCardModal, setIsOpenDeleteCardModal] = useState<boolean>(false)
+  const [isOpenEditCardModal, setIsOpenEditCardModal] = useState<boolean>(false)
+
+  const [cardForEditId, setCardForEditId] = useState<null | string>(null)
 
   const navigate = useNavigate()
   const { deckId } = useParams()
@@ -66,6 +77,11 @@ export const useDeckPage = (): DeckPageData => {
     },
   })
   const nameCardForDelete = cardsData?.items.find(card => card.id === cardForDeleteId)?.question
+
+  const answerForEdit = cardsData?.items.find(card => card.id === cardForEditId)?.answer
+  const answerImgForEdit = cardsData?.items.find(card => card.id === cardForEditId)?.answerImg
+  const questionForEdit = cardsData?.items.find(card => card.id === cardForEditId)?.question
+  const questionImgForEdit = cardsData?.items.find(card => card.id === cardForEditId)?.questionImg
 
   const { data: me } = useMeQuery()
   const ownerId = (me as User)?.id
@@ -123,9 +139,22 @@ export const useDeckPage = (): DeckPageData => {
     setCardForDeleteId('')
     setIsOpenDeleteCardModal(false)
   }
+  const handleOpenEditCardModal = (id: string) => {
+    setCardForEditId(id)
+    setIsOpenEditCardModal(true)
+  }
+  const handleCloseEditCardModal = () => {
+    setCardForEditId('')
+    setIsOpenEditCardModal(false)
+    refetchCards()
+    refetchDeck()
+  }
 
   return {
+    answerForEdit,
+    answerImgForEdit,
     cardForDeleteId,
+    cardForEditId,
     cardsData,
     deckData,
     deckId,
@@ -134,10 +163,12 @@ export const useDeckPage = (): DeckPageData => {
     handleCloseAddCardModal,
     handleCloseDeleteCardModal,
     handleCloseDeleteDeckModal,
+    handleCloseEditCardModal,
     handleCloseEditDeckModal,
     handleOpenAddCardModal,
     handleOpenDeleteCardModal,
     handleOpenDeleteDeckModal,
+    handleOpenEditCardModal,
     handleOpenEditDeckModal,
     handleSearchChange,
     isLoading,
@@ -145,9 +176,12 @@ export const useDeckPage = (): DeckPageData => {
     isOpenAddCardModal,
     isOpenDeleteCardModal,
     isOpenDeleteDeckModal,
+    isOpenEditCardModal,
     isOpenEditDeckModal,
     nameCardForDelete,
     ownerId,
+    questionForEdit,
+    questionImgForEdit,
     search: searchParams.get('search') || '',
   }
 }
