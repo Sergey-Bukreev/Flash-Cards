@@ -1,0 +1,52 @@
+.root {
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  border: 1px solid var(--color-dark-500);
+}
+
+.title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.question {
+  margin-bottom: 2rem;
+}
+
+.caption {
+  margin-top: 1rem;
+  color: var(--color-dark-100);
+}
+
+.answer {
+  margin-top: 1.5rem;
+}
+
+.answerText {
+  margin-bottom: 1.5rem;
+}
+
+.rate {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.cover {
+  display: block;
+
+  max-width: 100%;
+  height: 180px;
+  margin: 1rem auto 0;
+
+  object-fit: cover;
+}
+
+> b {
+  font-weight: var(--font-weight-bold);
+}
