@@ -66,6 +66,7 @@ export const DeckPage: React.FC = () => {
           <Typography variant={'h1'}>{deckData?.name}</Typography>
           {isMyDeck && (
             <DeckDropDown
+              id={deckId || ''}
               onDeleteHandler={handleOpenDeleteDeckModal}
               onEditHandler={handleOpenEditDeckModal}
             />

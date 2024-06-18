@@ -1,4 +1,11 @@
-import { Card, CardParams, CardResponse, CardsResponse } from '@/services/cards/card.type'
+import {
+  Card,
+  CardParams,
+  CardRateArgs,
+  CardResponse,
+  CardsResponse,
+  RandomCardArgs,
+} from '@/services/cards/card.type'
 import { flashcardsApi } from '@/services/flashcards-api'
 
 export const cardService = flashcardsApi.injectEndpoints({
@@ -27,6 +34,34 @@ export const cardService = flashcardsApi.injectEndpoints({
         url: `v1/decks/${id}/cards`,
       }),
     }),
+    getRandomCard: builder.query<CardResponse, RandomCardArgs>({
+      query: ({ id, previousCardId }) => ({
+        method: 'GET',
+        params: { previousCardId },
+        url: `v1/decks/${id}/learn`,
+      }),
+    }),
+    rateCard: builder.mutation<CardResponse, CardRateArgs>({
+      invalidatesTags: ['Cards'],
+      async onQueryStarted({ packId }, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newCard } = await queryFulfilled
+
+          dispatch(
+            cardService.util.updateQueryData('getRandomCard', { id: packId }, () => {
+              return newCard
+            })
+          )
+        } catch (error) {
+          console.log(error)
+        }
+      },
+      query: ({ packId, ...rest }) => ({
+        body: rest,
+        method: 'POST',
+        url: `v1/decks/${packId}/learn`,
+      }),
+    }),
     updateCard: builder.mutation<Card, { id: string; params: CardParams }>({
       invalidatesTags: ['Cards'],
       query: ({ id, params }) => ({
@@ -42,5 +77,7 @@ export const {
   useCreateCardMutation,
   useDeleteCardMutation,
   useGetCardsQuery,
+  useGetRandomCardQuery,
+  useRateCardMutation,
   useUpdateCardMutation,
 } = cardService

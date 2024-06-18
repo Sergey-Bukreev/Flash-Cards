@@ -9,6 +9,7 @@ import {
 import { Layout, useAuthContext } from '@/components/layout/layout'
 import { DeckPage } from '@/pages/deck/deck.page'
 import { DecksPage } from '@/pages/decks/decks.page'
+import { LearnPage } from '@/pages/learn/learn.page'
 import { SignInPage } from '@/pages/sign-in/sign-in.page'
 import { SignUpPage } from '@/pages/sign-up/sign-up.page'
 
@@ -31,6 +32,10 @@ const privateRoutes: RouteObject[] = [
   {
     element: <DeckPage />,
     path: '/decks/:deckId',
+  },
+  {
+    element: <LearnPage />,
+    path: '/decks/:deckId/learn',
   },
 ]
 

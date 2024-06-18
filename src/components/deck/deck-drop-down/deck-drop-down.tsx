@@ -8,15 +8,16 @@ import { PlayIcon } from '@/components/ui/drop-down/icons/play-icon'
 
 import s from './deck-drop-down.module.scss'
 type EditDeckDropDownProps = {
+  id: string
   onDeleteHandler: () => void
   onEditHandler: (value: boolean) => void
 }
-export const DeckDropDown = ({ onDeleteHandler, onEditHandler }: EditDeckDropDownProps) => {
+export const DeckDropDown = ({ id, onDeleteHandler, onEditHandler }: EditDeckDropDownProps) => {
   const navigate = useNavigate()
 
   return (
     <DropDown trigger={<MoreIcon className={s.triggerIcon} />}>
-      <DropDownItem onSelect={() => navigate('/learn')}>
+      <DropDownItem onSelect={() => navigate(`/decks/${id}/learn`)}>
         <PlayIcon />
         {'Learn'}
       </DropDownItem>

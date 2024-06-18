@@ -28,3 +28,12 @@ export type CardParams = {
 } | void
 
 export type CardResponse = Omit<Card, 'userId'>
+export type RandomCardArgs = {
+  id: string
+  previousCardId?: string
+}
+export type CardRateArgs = {
+  cardId: string
+  grade: number
+  packId: string
+}
