@@ -7,8 +7,11 @@ import {
 } from 'react-router-dom'
 
 import { Layout, useAuthContext } from '@/components/layout/layout'
+import { CheckEmailPage } from '@/pages/check-email/check-email.page'
+import { CreateNewPasswordPage } from '@/pages/create-new-password/create-new-password.page'
 import { DeckPage } from '@/pages/deck/deck.page'
 import { DecksPage } from '@/pages/decks/decks.page'
+import { ForgotPasswordPage } from '@/pages/forgot-password/forgot-password.page'
 import { LearnPage } from '@/pages/learn/learn.page'
 import { ProfilePage } from '@/pages/profile/profile'
 import { SignInPage } from '@/pages/sign-in/sign-in.page'
@@ -22,6 +25,10 @@ const publicRoutes: RouteObject[] = [
   {
     element: <SignUpPage />,
     path: '/sign-up',
+  },
+  {
+    element: <ForgotPasswordPage />,
+    path: '/recover-password',
   },
 ]
 
@@ -41,6 +48,14 @@ const privateRoutes: RouteObject[] = [
   {
     element: <ProfilePage />,
     path: '/profile',
+  },
+  {
+    element: <CheckEmailPage />,
+    path: 'check-email',
+  },
+  {
+    element: <CreateNewPasswordPage />,
+    path: '/create-new-password',
   },
 ]
 

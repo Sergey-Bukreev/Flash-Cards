@@ -1,6 +1,7 @@
 import {
   LoginArgs,
   LoginResponse,
+  RecoverPassword,
   SignUpArgs,
   UpdateProfileArgs,
   User,
@@ -14,6 +15,20 @@ const authService = flashcardsApi.injectEndpoints({
       me: builder.query<User, void>({
         providesTags: ['Me'],
         query: () => '/v1/auth/me',
+      }),
+      recoverPassword: builder.mutation<void, RecoverPassword>({
+        query: body => ({
+          body,
+          method: 'POST',
+          url: 'v1/auth/recover-password',
+        }),
+      }),
+      resetPassword: builder.mutation<void, { password: string; token: string }>({
+        query: ({ password, token }) => ({
+          body: { password },
+          method: 'POST',
+          url: `v1/auth/reset-password/${token}`,
+        }),
       }),
       signIn: builder.mutation<LoginResponse, LoginArgs>({
         invalidatesTags: ['Me'],
@@ -67,6 +82,8 @@ const authService = flashcardsApi.injectEndpoints({
 
 export const {
   useMeQuery,
+  useRecoverPasswordMutation,
+  useResetPasswordMutation,
   useSignInMutation,
   useSignOutMutation,
   useSignUpMutation,
