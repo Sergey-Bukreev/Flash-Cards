@@ -7,7 +7,7 @@ import { Typography } from '@/components/ui/typography'
 
 import s from './check-email.module.scss'
 export type CheckEmailProps = {
-  email: string
+  email: string | undefined
 }
 export const CheckEmail = ({ email }: CheckEmailProps) => {
   return (

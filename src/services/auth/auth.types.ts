@@ -25,5 +25,9 @@ export type UserResponse = {
   name: string
   updated: string
 }
+export type RecoverPassword = {
+  email: string
+  html: string
+}
 export type UpdateProfileArgs = FormData
 export type SignUpArgs = Omit<LoginArgs, 'rememberMe'>

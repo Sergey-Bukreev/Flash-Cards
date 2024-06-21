@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { FormValues } from '@/components/forms/edit-profile-form/use-edit-profile-form'
 import {
@@ -14,6 +15,7 @@ export const useProfilePage = () => {
 
   const [isEditMode, setEditMode] = useState(false)
 
+  const navigate = useNavigate()
   const updateAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       if (e.target.files && e.target.files.length) {
@@ -30,8 +32,13 @@ export const useProfilePage = () => {
       console.log(error)
     }
   }
-  const onLogOut = () => {
-    signOut()
+  const onLogOut = async () => {
+    try {
+      await signOut().unwrap()
+      navigate('/sign-in')
+    } catch (error) {
+      console.log(error)
+    }
   }
   const onEditModeHandler = () => {
     setEditMode(true)
