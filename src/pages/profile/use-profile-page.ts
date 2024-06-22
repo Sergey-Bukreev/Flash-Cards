@@ -9,7 +9,7 @@ import {
 } from '@/services/auth/auth.service'
 
 export const useProfilePage = () => {
-  const { data: me } = useMeQuery()
+  const { data: me, error, isLoading } = useMeQuery()
   const [signOut] = useSignOutMutation()
   const [updateProfile] = useUpdateProfileMutation()
 
@@ -54,5 +54,14 @@ export const useProfilePage = () => {
     setEditMode(false)
   }
 
-  return { handleOnUpdateName, isEditMode, me, onEditModeHandler, onLogOut, updateAvatar }
+  return {
+    error,
+    handleOnUpdateName,
+    isEditMode,
+    isLoading,
+    me,
+    onEditModeHandler,
+    onLogOut,
+    updateAvatar,
+  }
 }

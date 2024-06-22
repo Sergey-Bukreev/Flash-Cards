@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 
 import { LogoIcon } from '@/assets/logo'
-import { UserDropDown, UserDropDownProps } from '@/components/header/user-drop-down/user-drop-down'
+import { UserDropDown, UserDropDownProps } from '@/components/header/user-drop-down'
 import { Button } from '@/components/ui/button'
+import { Typography } from '@/components/ui/typography'
 
 import s from './header.module.scss'
 export type HeaderProps =
@@ -22,7 +23,12 @@ export const Header = (props: HeaderProps) => {
           <LogoIcon />
         </Link>
         {isAuthenticated && (
-          <UserDropDown avatar={avatar} email={email} onLogout={onLogout} userName={userName} />
+          <div className={s.userInfoWrapper}>
+            <Typography className={s.name} variant={'h4'}>
+              {userName}
+            </Typography>
+            <UserDropDown avatar={avatar} email={email} onLogout={onLogout} userName={userName} />
+          </div>
         )}
         {!isAuthenticated && (
           <Button as={Link} to={'/sign-in'}>

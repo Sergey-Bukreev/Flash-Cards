@@ -21,6 +21,7 @@ export const Layout = () => {
   const handleSignOut = async () => {
     try {
       await signOut().unwrap()
+
       navigate('/sign-in')
     } catch (error: any) {
       console.log(error)

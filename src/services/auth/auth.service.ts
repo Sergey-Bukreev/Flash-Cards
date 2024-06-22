@@ -12,7 +12,7 @@ import { flashcardsApi } from '@/services/flashcards-api'
 const authService = flashcardsApi.injectEndpoints({
   endpoints: builder => {
     return {
-      me: builder.query<User, void>({
+      me: builder.query<User | null, void>({
         providesTags: ['Me'],
         query: () => '/v1/auth/me',
       }),
@@ -49,18 +49,56 @@ const authService = flashcardsApi.injectEndpoints({
         }),
       }),
       signOut: builder.mutation<void, void>({
-        invalidatesTags: ['Me'],
-        async onQueryStarted(_, { queryFulfilled }) {
-          await queryFulfilled
+        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+          const res = dispatch(
+            authService.util.updateQueryData('me', _, () => {
+              return null
+            })
+          )
+
+          try {
+            await queryFulfilled
+          } catch (err) {
+            res.undo()
+          }
 
           localStorage.removeItem('accessToken')
           localStorage.removeItem('refreshToken')
+          dispatch(authService.util.invalidateTags(['Me']))
+          // dispatch(authService.util.resetApiState())
         },
         query: () => ({
           method: 'POST',
           url: `v2/auth/logout`,
         }),
       }),
+      // signOut: builder.mutation<void, void>({
+      //   async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      //     // Удаляем токены из локального хранилища и сбрасываем данные о пользователе
+      //     localStorage.removeItem('accessToken')
+      //     localStorage.removeItem('refreshToken')
+      //     dispatch(
+      //       authService.util.updateQueryData('me', _, () => {
+      //         return null
+      //       })
+      //     )
+      //
+      //     try {
+      //       await queryFulfilled
+      //     } catch (err) {
+      //       // Восстанавливаем данные о пользователе в случае ошибки
+      //       dispatch(authService.util.updateQueryData('me', _, prevUser => prevUser))
+      //     }
+      //
+      //     // Инвалидируем теги и сбрасываем состояние API
+      //     dispatch(authService.util.invalidateTags(['Me']))
+      //     dispatch(authService.util.resetApiState())
+      //   },
+      //   query: () => ({
+      //     method: 'POST',
+      //     url: `v2/auth/logout`,
+      //   }),
+      // }),
       signUp: builder.mutation<User, SignUpArgs>({
         query: body => ({
           body,
