@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { SignUp } from '@/auth/sign-up'
 import { Page } from '@/components/ui/page'
 import { useSignInMutation, useSignUpMutation } from '@/services/auth/auth.service'
@@ -12,9 +14,18 @@ export const SignUpPage = () => {
   const handleSignUp = async (data: SignUpArgs) => {
     try {
       await signUp({ email: data.email, password: data.password }).unwrap()
-      await signIn({ email: data.email, password: data.password }).unwrap()
-    } catch (error: any) {
-      console.log(error)
+      toast.success('Account created successfully')
+
+      try {
+        await signIn({ email: data.email, password: data.password }).unwrap()
+        toast.success('Signed in successfully')
+      } catch (signInError: any) {
+        toast.error(
+          signInError.data?.message ?? 'Failed to sign in. Please try logging in manually.'
+        )
+      }
+    } catch (signUpError: any) {
+      toast.error(signUpError.data?.message ?? 'Failed to create account. Please try again.')
     }
   }
 

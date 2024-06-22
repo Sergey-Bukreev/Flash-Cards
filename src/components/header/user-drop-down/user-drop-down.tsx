@@ -10,7 +10,7 @@ import { DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
 
 import s from './user-drop-down.module.scss'
 
-import baseUserAvatar from './../../../assets/base-user-avatar.png'
+import baseUserAvatar from '../../../assets/base-user-avatar.png'
 
 export type UserDropDownProps = {
   avatar: null | string

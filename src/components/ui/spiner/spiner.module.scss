@@ -1,0 +1,64 @@
+.preloader {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: transparent;
+}
+
+.preloaderLoader,
+.preloaderPercents {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ldioyzaezf3dcml {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ldioyzaezf3dcml div {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  transform-origin: 50% 50%; /* Change to center the rotation */
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+  box-shadow: 0 4px 0 0 #8878f8;
+
+  animation: ldioyzaezf3dcml 1s linear infinite;
+}
+
+.loadingiospinnereclipse2by998twmg9 {
+  overflow: hidden;
+  display: inline-block;
+
+  width: 100px;
+  height: 100px;
+
+  background: transparent;
+}
+
+.ldioyzaezf3dcml {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}

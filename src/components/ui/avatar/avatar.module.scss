@@ -1,4 +1,15 @@
 .Avatar {
   object-fit: cover;
   border-radius: 50%;
+  border: 1px solid transparent;
+  transition:
+    border 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid var(--color-accent-100);
+    box-shadow: 0 0 10px var(--color-accent-100);
+  }
 }

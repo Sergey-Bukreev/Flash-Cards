@@ -26,13 +26,13 @@ export const LoggedInExample: Story = {
     avatar:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXBnJCBrKnx5d9Ru8Pe6I9JjZR5SaMsdGk2A&usqp=CAU',
     email: 'emailFortest@gmail.com',
-    isLoggedIn: true,
+    isAuthenticated: true,
     onLogout: () => {},
     userName: 'User Name',
   },
 }
 export const LoggedOutExample: Story = {
   args: {
-    isLoggedIn: false,
+    isAuthenticated: false,
   },
 }

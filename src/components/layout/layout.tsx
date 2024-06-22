@@ -1,8 +1,11 @@
 import { ReactNode } from 'react'
 import { Outlet, useNavigate, useOutletContext } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 import { Header, HeaderProps } from '@/components/header'
 import { useMeQuery, useSignOutMutation } from '@/services/auth/auth.service'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 import s from './layout.module.scss'
 type AuthContext = {
@@ -21,10 +24,10 @@ export const Layout = () => {
   const handleSignOut = async () => {
     try {
       await signOut().unwrap()
-
+      toast.success('Log-out successfully')
       navigate('/sign-in')
     } catch (error: any) {
-      console.log(error)
+      toast.error(error.data.message ?? 'Could not Log Out')
     }
   }
 
@@ -37,6 +40,18 @@ export const Layout = () => {
       userName={data?.name ?? ''}
     >
       <Outlet context={{ isAuthenticated } satisfies AuthContext} />
+      <ToastContainer
+        autoClose={5000}
+        closeOnClick
+        draggable
+        hideProgressBar={false}
+        newestOnTop={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        position={'bottom-right'}
+        rtl={false}
+        theme={'dark'}
+      />
     </LayoutPrimitive>
   )
 }

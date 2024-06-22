@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { CreateNewPassword } from '@/auth/create-new-password'
 import { FormValues } from '@/auth/create-new-password/use-create-new-password'
@@ -15,8 +16,9 @@ export const CreateNewPasswordPage = () => {
       try {
         await resetPassword({ password, token }).unwrap()
         navigate('/sign-in')
-      } catch (error) {
-        console.log(error)
+        toast.success('Password reset successfully.')
+      } catch (error: any) {
+        toast.error(error.data.message ?? 'Password reset failed')
       }
     }
   }

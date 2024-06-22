@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { ForgotPassword } from '@/auth/forgot-password'
 import { FormValues } from '@/auth/forgot-password/use-forgot-password'
@@ -16,8 +17,8 @@ export const ForgotPasswordPage = () => {
     try {
       await recoverPassword({ email, html }).unwrap()
       navigate(`/check-email/${email}`)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? 'Password reset failed')
     }
   }
 

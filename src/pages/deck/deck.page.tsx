@@ -11,6 +11,7 @@ import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-moda
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
+import { Spiner } from '@/components/ui/spiner/spiner'
 import { Typography } from '@/components/ui/typography'
 import { useDeckPage } from '@/pages/deck/use-deck.page'
 
@@ -53,7 +54,7 @@ export const DeckPage: React.FC = () => {
   } = useDeckPage()
 
   if (isLoading) {
-    return <Typography variant={'h1'}>{'Loading ....'}</Typography>
+    return <Spiner />
   }
   if (error) {
     return <Typography variant={'h1'}>{`Error: ${JSON.stringify(error)}`}</Typography>
