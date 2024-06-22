@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { SignIn } from '@/auth/sign-in'
 import { Page } from '@/components/ui/page'
@@ -16,9 +17,9 @@ export const SignInPage = () => {
   const handleSignIn = async (data: LoginArgs) => {
     try {
       await signIn(data).unwrap()
-      navigate('/')
+      toast.success('You are successfully authorized')
     } catch (error: any) {
-      console.log(error)
+      toast.error(error?.data?.message ?? 'Could not sign in')
     }
   }
 

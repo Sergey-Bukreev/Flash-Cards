@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
 import { Pagination } from '@/components/ui/pagination'
 import { Slider } from '@/components/ui/slider'
+import { Spiner } from '@/components/ui/spiner/spiner'
 import { Tabs } from '@/components/ui/tabs'
 import { Typography } from '@/components/ui/typography'
 import { useDecksPage } from '@/pages/decks/use-decks-page'
@@ -52,7 +53,7 @@ export function DecksPage() {
   } = useDecksPage()
 
   if (isLoading) {
-    return <Typography variant={'h1'}>{'Loading ....'}</Typography>
+    return <Spiner />
   }
   if (error) {
     return <Typography variant={'h1'}>{`Error: ${JSON.stringify(error)}`}</Typography>

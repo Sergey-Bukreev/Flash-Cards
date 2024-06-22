@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import {
   Card,
   CardParams,
@@ -52,8 +54,10 @@ export const cardService = flashcardsApi.injectEndpoints({
               return newCard
             })
           )
-        } catch (error) {
-          console.log(error)
+        } catch (error: any) {
+          toast.error(
+            error.data.message ?? 'An error occurred while updating the card. Please try again.'
+          )
         }
       },
       query: ({ packId, ...rest }) => ({

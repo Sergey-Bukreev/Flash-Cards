@@ -24,7 +24,7 @@ export const Header = (props: HeaderProps) => {
         </Link>
         {isAuthenticated && (
           <div className={s.userInfoWrapper}>
-            <Typography className={s.name} variant={'h4'}>
+            <Typography as={Link} className={s.name} to={'/profile'} variant={'h4'}>
               {userName}
             </Typography>
             <UserDropDown avatar={avatar} email={email} onLogout={onLogout} userName={userName} />
