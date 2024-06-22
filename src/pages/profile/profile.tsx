@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+
 import { EditProfileForm } from '@/components/forms/edit-profile-form'
 import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -14,8 +16,28 @@ import s from './profile.module.scss'
 import baseUserPhoto from '../../assets/base-user-avatar.png'
 
 export const ProfilePage = () => {
-  const { handleOnUpdateName, isEditMode, me, onEditModeHandler, onLogOut, updateAvatar } =
-    useProfilePage()
+  const {
+    error,
+    handleOnUpdateName,
+    isEditMode,
+    isLoading,
+    me,
+    onEditModeHandler,
+    onLogOut,
+    updateAvatar,
+  } = useProfilePage()
+
+  const navigate = useNavigate()
+
+  if (isLoading) {
+    return <Typography variant={'h1'}>{'Loading ....'}</Typography>
+  }
+  if (error) {
+    return <Typography variant={'h1'}>{`Error: ${JSON.stringify(error)}`}</Typography>
+  }
+  if (!me && !isLoading) {
+    navigate('/sign-in')
+  }
 
   return (
     <Page className={s.root}>

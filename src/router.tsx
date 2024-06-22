@@ -30,6 +30,18 @@ const publicRoutes: RouteObject[] = [
     element: <ForgotPasswordPage />,
     path: '/recover-password',
   },
+  {
+    element: <CheckEmailPage />,
+    path: '/check-email/:email',
+  },
+  {
+    element: <CreateNewPasswordPage />,
+    path: '/create-new-password',
+  },
+  {
+    element: <ForgotPasswordPage />,
+    path: '/forgot-password',
+  },
 ]
 
 const privateRoutes: RouteObject[] = [
@@ -48,14 +60,6 @@ const privateRoutes: RouteObject[] = [
   {
     element: <ProfilePage />,
     path: '/profile',
-  },
-  {
-    element: <CheckEmailPage />,
-    path: 'check-email',
-  },
-  {
-    element: <CreateNewPasswordPage />,
-    path: '/create-new-password',
   },
 ]
 

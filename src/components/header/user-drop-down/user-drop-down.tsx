@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-import { useUserDropDown } from '@/components/header/user-drop-down/use-user-drop-down'
+import { Avatar } from '@/components/ui/avatar'
 import { DropDown, DropDownItem, DropDownSeparator } from '@/components/ui/drop-down'
 import { PersonIcon } from '@/components/ui/drop-down/icons/person-icon'
 import { SignOutIcon } from '@/components/ui/drop-down/icons/sing-out-icon'
@@ -20,10 +20,21 @@ export type UserDropDownProps = {
 }
 export const UserDropDown = (props: UserDropDownProps) => {
   const { avatar, email, onLogout, userName } = props
-  const { photo, trigger } = useUserDropDown({ avatar, baseUserAvatar, userName })
+  const photo = (
+    <div>
+      <Avatar size={50} src={avatar?.length ? avatar : baseUserAvatar} />
+    </div>
+  )
+  const navigate = useNavigate()
+
+  const handleSelect = (callback: () => void) => {
+    return () => {
+      callback()
+    }
+  }
 
   return (
-    <DropDown trigger={trigger}>
+    <DropDown trigger={photo}>
       <DropDownItem>
         <div className={s.userInfoWrapper}>
           {photo}
@@ -34,11 +45,9 @@ export const UserDropDown = (props: UserDropDownProps) => {
         </div>
       </DropDownItem>
       <DropDownSeparator />
-      <DropDownItem>
+      <DropDownItem onSelect={handleSelect(() => navigate('/profile'))}>
         <PersonIcon />
-        <Typography as={Link} className={s.Link} to={'/profile'} variant={'body2'}>
-          {'My profile'}
-        </Typography>
+        <Typography variant={'body2'}>{'My profile'}</Typography>
       </DropDownItem>
       <DropDownSeparator />
       <DropDownItem onSelect={onLogout}>

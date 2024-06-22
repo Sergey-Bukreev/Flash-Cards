@@ -25,3 +25,16 @@
   max-width: var(--max-width);
   margin: 0 auto;
 }
+
+.userInfoWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+
+  .name {
+    text-decoration: underline dashed var(--color-light-100) 2px;
+    text-underline-offset: 6px;
+  }
+}

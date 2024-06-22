@@ -15,7 +15,7 @@ export const ForgotPasswordPage = () => {
   const handleOnSubmit = async ({ email }: FormValues) => {
     try {
       await recoverPassword({ email, html }).unwrap()
-      navigate(`check-email/${email}`)
+      navigate(`/check-email/${email}`)
     } catch (error) {
       console.log(error)
     }
