@@ -1,6 +1,82 @@
+.tableRoot {
+  overflow-x: auto;
+  width: 100%;
+  margin-bottom: 2rem;
+  transition: 0.3s;
+
+  .question,
+  .answer,
+  .grade {
+    position: relative;
+
+    padding: 10px 24px;
+
+    text-align: left;
+    word-break: break-word;
+    vertical-align: top;
+  }
+
+  .date {
+    min-width: 100px;
+  }
+
+  .controls {
+    width: 100px;
+    text-align: center;
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media (width <= 950px) {
+    .question,
+    .answer {
+      padding: 10px 16px;
+      font-size: 0.9em;
+    }
+  }
+
+  @media (width <= 768px) {
+    .question,
+    .answer {
+      padding: 8px 12px;
+      font-size: 0.85em;
+    }
+
+    .controls {
+      width: 80px;
+    }
+
+    .buttons {
+      gap: 6px;
+    }
+  }
+}
+
 .iconsWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 15px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (width <= 768px) {
+  .iconsWrapper {
+    gap: 4px;
+  }
+
+  .button {
+    width: 24px;
+    height: 24px;
+  }
 }

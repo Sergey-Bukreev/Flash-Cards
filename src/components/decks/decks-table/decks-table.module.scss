@@ -1,12 +1,66 @@
-.nameWrapper {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+.tableRoot {
+  overflow-x: auto;
+  width: 100%;
+  transition: 0.3s;
 
-  img {
-    width: 7.5rem;
-    height: 3rem;
-    object-fit: cover;
+  .nameWrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 3px;
+    }
+  }
+
+  .date,
+  .author,
+  .cardsCount {
+    min-width: 100px;
+  }
+
+  .actions {
+    width: 120px;
+    text-align: center;
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media (width <= 950px) {
+    .nameWrapper,
+    .date,
+    .author,
+    .cardsCount {
+      padding: 10px 16px;
+      font-size: 0.9em;
+    }
+  }
+
+  @media (width <= 768px) {
+    .nameWrapper,
+    .date,
+    .author,
+    .cardsCount {
+      padding: 8px 12px;
+      font-size: 0.85em;
+    }
+
+    .actions {
+      width: 100px;
+    }
+
+    .buttons {
+      gap: 6px;
+    }
   }
 }
 
@@ -14,5 +68,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 60px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (width <= 768px) {
+  .iconsWrapper {
+    gap: 4px;
+  }
+
+  .button {
+    width: 24px;
+    height: 24px;
+  }
 }
