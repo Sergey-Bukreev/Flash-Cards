@@ -8,6 +8,7 @@ import { EditCardModal } from '@/components/deck/edit-card-modal/edit-card-modal
 import { CardsTable } from '@/components/decks/cards-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
 import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
+import { BackButton } from '@/components/ui/back-button'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
@@ -62,6 +63,10 @@ export const DeckPage: React.FC = () => {
 
   return (
     <Page>
+      <div className={s.backContainer}>
+        <BackButton />
+      </div>
+
       <div className={s.pageTitle}>
         <div className={s.titleInfo}>
           <Typography variant={'h1'}>{deckData?.name}</Typography>

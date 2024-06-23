@@ -1,0 +1,26 @@
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0;
+
+  color: var(--color-text-default);
+
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+
+    .icon path {
+      fill: var(--color-accent-300);
+    }
+
+    .text {
+      color: var(--color-accent-300);
+    }
+  }
+}
