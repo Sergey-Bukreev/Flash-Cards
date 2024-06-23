@@ -21,7 +21,7 @@ export const CheckEmail = ({ email }: CheckEmailProps) => {
       <Typography className={s.text} variant={'body2'}>
         {`We've sent an e-mail with instructions to ${email}`}
       </Typography>
-      <Button as={Link} fullWidth to={'/sing-in'}>
+      <Button as={Link} fullWidth to={'/sign-in'}>
         {'Back to Sign in'}
       </Button>
     </Card>

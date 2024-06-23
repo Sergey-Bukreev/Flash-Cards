@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { EditProfileForm } from '@/components/forms/edit-profile-form'
 import { Avatar } from '@/components/ui/avatar'
+import { BackButton } from '@/components/ui/back-button'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { EditIcon } from '@/components/ui/drop-down/icons/edit-icon'
@@ -41,6 +42,9 @@ export const ProfilePage = () => {
 
   return (
     <Page className={s.root}>
+      <div className={s.backContainer}>
+        <BackButton />
+      </div>
       <Card className={s.card}>
         <Typography className={s.title} variant={'h1'}>
           {'Personal Information'}

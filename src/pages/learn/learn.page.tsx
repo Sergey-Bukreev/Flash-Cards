@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { RateCardForm, RateType } from '@/components/forms/rate-card-form'
+import { BackButton } from '@/components/ui/back-button'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Page } from '@/components/ui/page'
@@ -33,6 +34,9 @@ export const LearnPage = () => {
 
   return (
     <Page className={s.root}>
+      <div className={s.backContainer}>
+        <BackButton />
+      </div>
       <Card className={s.content}>
         <Typography as={'h1'} className={s.title} variant={'h1'}>
           {`Learn "${deckData?.name}"`}

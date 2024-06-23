@@ -47,6 +47,13 @@
   object-fit: cover;
 }
 
-> b {
+b {
   font-weight: var(--font-weight-bold);
+}
+
+.backContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  width: 100%;
 }

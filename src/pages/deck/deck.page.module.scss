@@ -11,9 +11,17 @@
   align-items: center;
   justify-content: center;
 }
+
 .message {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   margin-top: 200px;
+}
+
+.backContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  width: 100%;
 }
