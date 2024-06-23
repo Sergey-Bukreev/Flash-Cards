@@ -36,7 +36,7 @@ const publicRoutes: RouteObject[] = [
   },
   {
     element: <CreateNewPasswordPage />,
-    path: '/create-new-password',
+    path: '/create-new-password/:token',
   },
   {
     element: <ForgotPasswordPage />,
