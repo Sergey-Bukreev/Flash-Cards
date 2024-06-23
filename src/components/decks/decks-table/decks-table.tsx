@@ -11,12 +11,14 @@ import { Deck } from '@/services/decks/decks.type'
 import s from './decks-table.module.scss'
 
 import baseDeckImage from '../../../assets/base-deck-image.png'
+
 export type DecksTableProps = {
   currentUserId: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
 }
+
 export const DecksTable = (props: DecksTableProps) => {
   const { currentUserId, decks, onDeleteClick, onEditClick } = props
   const handleEditClick = (id: string) => () => onEditClick(id)
@@ -24,13 +26,13 @@ export const DecksTable = (props: DecksTableProps) => {
   const navigate = useNavigate()
 
   return (
-    <CustomTable.Root>
+    <CustomTable.Root className={s.tableRoot}>
       <CustomTable.Head>
         <CustomTable.Row>
           <CustomTable.HeadCell>{'Name'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Card'}</CustomTable.HeadCell>
+          <CustomTable.HeadCell>{'Cards'}</CustomTable.HeadCell>
           <CustomTable.HeadCell>{'Last Updated'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Create by'}</CustomTable.HeadCell>
+          <CustomTable.HeadCell>{'Created by'}</CustomTable.HeadCell>
           <CustomTable.HeadCell></CustomTable.HeadCell>
         </CustomTable.Row>
       </CustomTable.Head>
@@ -48,9 +50,11 @@ export const DecksTable = (props: DecksTableProps) => {
                   </Typography>
                 </div>
               </CustomTable.DataCell>
-              <CustomTable.DataCell>{deck.cardsCount}</CustomTable.DataCell>
-              <CustomTable.DataCell>{updateAt}</CustomTable.DataCell>
-              <CustomTable.DataCell>{deck.author.name}</CustomTable.DataCell>
+              <CustomTable.DataCell className={s.cardsCount}>
+                {deck.cardsCount}
+              </CustomTable.DataCell>
+              <CustomTable.DataCell className={s.date}>{updateAt}</CustomTable.DataCell>
+              <CustomTable.DataCell className={s.author}>{deck.author.name}</CustomTable.DataCell>
               <CustomTable.DataCell className={s.actions}>
                 <div className={s.iconsWrapper}>
                   <Button

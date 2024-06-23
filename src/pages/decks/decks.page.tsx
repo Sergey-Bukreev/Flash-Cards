@@ -119,7 +119,7 @@ export function DecksPage() {
           name={deckToEditName || ''}
           onClose={handleCloseEditDeckModal}
         />
-        <div className={s.paginnation}>
+        <div className={s.pagination}>
           <Pagination
             currentPage={currentPage ?? 1}
             onPageChanged={handleOnPageChange}

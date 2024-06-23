@@ -14,6 +14,7 @@ export type CardsTableProps = {
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
 }
+
 export const CardsTable = ({
   cards,
   currentUserId,
@@ -24,7 +25,7 @@ export const CardsTable = ({
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
 
   return (
-    <CustomTable.Root>
+    <CustomTable.Root className={s.tableRoot}>
       <CustomTable.Head>
         <CustomTable.Row>
           <CustomTable.HeadCell>{'Question'}</CustomTable.HeadCell>
@@ -40,19 +41,19 @@ export const CardsTable = ({
 
           return (
             <CustomTable.Row key={card.id}>
-              <CustomTable.DataCell>
+              <CustomTable.DataCell className={s.question}>
                 <Typography variant={'body2'}>{card.question}</Typography>
               </CustomTable.DataCell>
-              <CustomTable.DataCell>
+              <CustomTable.DataCell className={s.answer}>
                 <Typography variant={'body2'}>{card.answer}</Typography>
               </CustomTable.DataCell>
-              <CustomTable.DataCell>
+              <CustomTable.DataCell className={s.date}>
                 <Typography variant={'body2'}>{updateAt}</Typography>
               </CustomTable.DataCell>
-              <CustomTable.DataCell>
+              <CustomTable.DataCell className={s.grade}>
                 <Rating selectedGrade={card.grade} />
               </CustomTable.DataCell>
-              <CustomTable.DataCell>
+              <CustomTable.DataCell className={s.controls}>
                 <div className={s.iconsWrapper}>
                   <Button
                     className={s.button}
