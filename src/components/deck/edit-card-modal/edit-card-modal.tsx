@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { CreateCarModalProps } from '@/components/deck/create-card-modal'
 import { CardForm } from '@/components/forms/card-form'
 import { FormValues } from '@/components/forms/card-form/use-card-form'
@@ -18,9 +20,10 @@ export const EditCardModal = (props: EditCardModalProps) => {
   const handleOnSubmit = async (data: FormValues) => {
     try {
       await updateCard({ id, params: data as CardParams })
+      toast.success(`Card "${question}" updated successfully.`)
       onClose()
-    } catch (error) {
-      console.error('Failed to update deck:', error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? `Failed to update card "${question}"`)
     }
   }
 

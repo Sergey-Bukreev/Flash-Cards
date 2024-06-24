@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { toast } from 'react-toastify'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -24,9 +25,10 @@ export const DeleteDeckModal: FC<DeleteModalProps> = ({
   const handleOnDelete = async () => {
     try {
       await deleteDeck({ id }).unwrap()
+      toast.success(`Deck "${name}" deleted successfully.`)
       onClose()
-    } catch (error) {
-      console.error('Failed to delete the deck:', error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? `Failed to delete Deck "${name}"`)
     }
   }
 

@@ -47,7 +47,7 @@ const publicRoutes: RouteObject[] = [
 const privateRoutes: RouteObject[] = [
   {
     element: <DecksPage />,
-    path: '/',
+    path: '/decks',
   },
   {
     element: <DeckPage />,
@@ -79,6 +79,7 @@ export const router = createBrowserRouter([
       ...publicRoutes,
     ],
     element: <Layout />,
+    path: '/',
   },
 ])
 

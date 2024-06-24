@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { CardForm } from '@/components/forms/card-form'
 import { FormValues } from '@/components/forms/card-form/use-card-form'
 import { ModalWindow } from '@/components/ui/modal'
@@ -16,9 +18,10 @@ export const CreateCardModal = ({ id, isOpen, onClose }: CreateCarModalProps) =>
   const handleOnnSubmit = async (data: FormValues) => {
     try {
       await createCard({ body: data as CardParams, id }).unwrap()
+      toast.success('Card created successfully.')
       onClose()
-    } catch (error) {
-      console.error('Failed to create card:', error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? 'Failed to create deck:')
     }
   }
 

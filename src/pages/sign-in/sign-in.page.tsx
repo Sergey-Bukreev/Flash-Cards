@@ -24,7 +24,7 @@ export const SignInPage = () => {
   }
 
   if (me) {
-    navigate('/')
+    navigate('/decks')
   }
 
   return (

@@ -109,7 +109,7 @@ export const useDeckPage = (): DeckPageData => {
 
   const handleCloseDeleteDeckModal = () => {
     setIsOpenDeleteDeckModal(false)
-    navigate('/')
+    navigate('/decks')
   }
 
   const handleOpenEditDeckModal = () => {

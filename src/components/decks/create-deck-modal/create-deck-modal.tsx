@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { DeckForm } from '@/components/forms/deck-form/deck-form'
 import { FormValues } from '@/components/forms/deck-form/use-deck-form'
 import { ModalWindow } from '@/components/ui/modal'
@@ -15,9 +17,10 @@ export const CreateDeckModal = ({ isOpen, onClose }: CreateDeckModalProps) => {
   const handleOnSubmit = async (data: FormValues) => {
     try {
       await createDeck(data as CreateDecksArgs).unwrap()
+      toast.success('Deck created successfully.')
       onClose()
-    } catch (error) {
-      console.error('Failed to create deck:', error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? 'Failed to create Deck')
     }
   }
 
