@@ -31,6 +31,7 @@ export function DecksPage() {
     handleCloseAddDeckModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
+    handleFavoriteClick,
     handleOnPageChange,
     handleOnPageSizeChange,
     handleOpenAddDeckModal,
@@ -104,6 +105,7 @@ export function DecksPage() {
           decks={data?.items}
           onDeleteClick={handleOpenDeleteDeckModal}
           onEditClick={handleOpenEditDeckModal}
+          onFavoriteClick={handleFavoriteClick}
         />
         <DeleteDeckModal
           id={deckToDeleteID}

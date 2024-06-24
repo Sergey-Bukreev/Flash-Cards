@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 
+import { StarIcon } from '@/assets/star-icon'
 import { Button } from '@/components/ui/button'
 import { DeleteIcon } from '@/components/ui/drop-down/icons/delete-icon'
 import { EditIcon } from '@/components/ui/drop-down/icons/edit-icon'
@@ -7,6 +8,7 @@ import { PlayIcon } from '@/components/ui/drop-down/icons/play-icon'
 import { CustomTable } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { Deck } from '@/services/decks/decks.type'
+import clsx from 'clsx'
 
 import s from './decks-table.module.scss'
 
@@ -17,12 +19,15 @@ export type DecksTableProps = {
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onFavoriteClick: (id: string, isFavorite: boolean) => void
 }
 
 export const DecksTable = (props: DecksTableProps) => {
-  const { currentUserId, decks, onDeleteClick, onEditClick } = props
+  const { currentUserId, decks, onDeleteClick, onEditClick, onFavoriteClick } = props
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
+  const handleFavoriteClick = (id: string, isFavorite: boolean) => () =>
+    onFavoriteClick(id, isFavorite)
   const navigate = useNavigate()
 
   return (
@@ -64,6 +69,17 @@ export const DecksTable = (props: DecksTableProps) => {
                     variant={'icon'}
                   >
                     <PlayIcon disabled={deck.cardsCount === 0} height={20} width={20} />
+                  </Button>
+                  <Button
+                    className={s.button}
+                    onClick={handleFavoriteClick(deck.id, deck.isFavorite)}
+                    variant={'icon'}
+                  >
+                    <StarIcon
+                      className={clsx(s.favoriteIcon, deck.isFavorite && s.selected)}
+                      height={20}
+                      width={20}
+                    />
                   </Button>
                   <Button
                     className={s.button}

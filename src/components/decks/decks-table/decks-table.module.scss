@@ -25,14 +25,6 @@
   .actions {
     width: 120px;
     text-align: center;
-
-    .buttons {
-      display: flex;
-      flex-direction: row;
-      gap: 8px;
-      align-items: center;
-      justify-content: center;
-    }
   }
 
   @media (width <= 950px) {
@@ -85,4 +77,14 @@
     width: 24px;
     height: 24px;
   }
+}
+
+.favoriteIcon path {
+  fill: transparent;
+  stroke: var(--color-light-100);
+  stroke-width: 2px;
+}
+
+.favoriteIcon.selected path {
+  fill: var(--color-light-100);
 }

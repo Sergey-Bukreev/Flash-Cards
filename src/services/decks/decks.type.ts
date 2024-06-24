@@ -17,6 +17,7 @@ export interface Deck {
   cover?: string
   created: string
   id: string
+  isFavorite: boolean
   isPrivate: boolean
   name: string
   updated: string

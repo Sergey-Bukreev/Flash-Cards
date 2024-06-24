@@ -1,9 +1,15 @@
 import { ChangeEvent, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { useDebounce } from '@/components/common/hooks/use-debounce'
 import { useMeQuery } from '@/services/auth/auth.service'
-import { useGetDecksQuery, useGetMinMaxCardsQuery } from '@/services/decks/decks.sevice'
+import {
+  useAddDeckToFavoritesMutation,
+  useGetDecksQuery,
+  useGetMinMaxCardsQuery,
+  useRemoveDeckFromFavoritesMutation,
+} from '@/services/decks/decks.sevice'
 import { DecksListResponse } from '@/services/decks/decks.type'
 
 interface DecksPageData {
@@ -22,6 +28,7 @@ interface DecksPageData {
   handleCloseAddDeckModal: () => void
   handleCloseDeleteDeckModal: () => void
   handleCloseEditDeckModal: () => void
+  handleFavoriteClick: (id: string, isFavorite: boolean) => void
   handleOnPageChange: (pageNumber: number) => void
   handleOnPageSizeChange: (size: number) => void
   handleOpenAddDeckModal: () => void
@@ -54,6 +61,8 @@ export const useDecksPage = (): DecksPageData => {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
+  const [addDeckToFavorites] = useAddDeckToFavoritesMutation()
+  const [removeDeckFromFavorites] = useRemoveDeckFromFavoritesMutation()
 
   const search = searchParams.get('search') || ''
   const debouncedSearch = useDebounce(search, 500)
@@ -187,6 +196,23 @@ export const useDecksPage = (): DecksPageData => {
     setDeckToEditID('')
     setIsOpenEditDeckModal(false)
   }
+  const handleFavoriteClick = async (id: string, isFavorite: boolean) => {
+    if (isFavorite) {
+      try {
+        await removeDeckFromFavorites({ id })
+        toast.success('Deck removed from Favorites')
+      } catch (error: any) {
+        toast.error(error.data.message ?? 'Failed to delete deck from Favorites')
+      }
+    } else {
+      try {
+        await addDeckToFavorites({ id })
+        toast.success('Deck Adding To Favorites')
+      } catch (error: any) {
+        toast.error(error.data.message ?? 'Failed to add deck to Favorites')
+      }
+    }
+  }
 
   return {
     currentPage,
@@ -204,6 +230,7 @@ export const useDecksPage = (): DecksPageData => {
     handleCloseAddDeckModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
+    handleFavoriteClick,
     handleOnPageChange,
     handleOnPageSizeChange,
     handleOpenAddDeckModal,
