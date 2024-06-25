@@ -12,6 +12,7 @@ import { BackButton } from '@/components/ui/back-button'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input/input'
 import { Page } from '@/components/ui/page'
+import { Pagination } from '@/components/ui/pagination'
 import { Spiner } from '@/components/ui/spiner/spiner'
 import { Typography } from '@/components/ui/typography'
 import { useDeckPage } from '@/pages/deck/use-deck.page'
@@ -34,6 +35,8 @@ export const DeckPage: React.FC = () => {
     handleCloseDeleteDeckModal,
     handleCloseEditCardModal,
     handleCloseEditDeckModal,
+    handleOnPageCahnge,
+    handleOnPageSizeChange,
     handleOpenAddCardModal,
     handleOpenDeleteCardModal,
     handleOpenDeleteDeckModal,
@@ -62,7 +65,7 @@ export const DeckPage: React.FC = () => {
   }
 
   return (
-    <Page>
+    <Page className={s.page}>
       <div className={s.backContainer}>
         <BackButton />
       </div>
@@ -113,6 +116,15 @@ export const DeckPage: React.FC = () => {
           </Typography>
         </div>
       )}
+      <div className={s.pagination}>
+        <Pagination
+          currentPage={cardsData?.pagination.currentPage ?? 1}
+          onPageChanged={handleOnPageCahnge}
+          onPageSizeChange={handleOnPageSizeChange}
+          pageSize={cardsData?.pagination.itemsPerPage ?? 1}
+          totalCount={cardsData?.pagination.totalItems ?? 1}
+        />
+      </div>
 
       <EditDeckModal
         cover={deckData?.cover || null}

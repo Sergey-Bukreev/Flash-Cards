@@ -1,14 +1,13 @@
 .tableRoot {
   overflow-x: auto;
   width: 100%;
-  margin-bottom: 2rem;
   transition: 0.3s;
 
   .question,
-  .answer,
-  .grade {
+  .answer {
     position: relative;
 
+    max-width: 350px;
     padding: 10px 24px;
 
     text-align: left;

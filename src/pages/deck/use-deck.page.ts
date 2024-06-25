@@ -24,6 +24,8 @@ interface DeckPageData {
   handleCloseDeleteDeckModal: () => void
   handleCloseEditCardModal: () => void
   handleCloseEditDeckModal: () => void
+  handleOnPageCahnge: (pageNumber: number) => void
+  handleOnPageSizeChange: (size: number) => void
   handleOpenAddCardModal: () => void
   handleOpenDeleteCardModal: (id: string) => void
   handleOpenDeleteDeckModal: () => void
@@ -60,6 +62,10 @@ export const useDeckPage = (): DeckPageData => {
   const navigate = useNavigate()
   const { deckId } = useParams()
 
+  const pageSize = Number(searchParams.get('pageSize')) || 10
+  const currentPage = Number(searchParams.get('currentPage')) || 1
+  const search = searchParams.get('search') || ''
+
   const { data: deckData, refetch: refetchDeck } = useGetDeckByIdQuery({
     id: deckId || '',
   })
@@ -73,9 +79,12 @@ export const useDeckPage = (): DeckPageData => {
     id: deckId || '',
     params: {
       answer: '',
-      question: useDebounce(searchParams.get('search') || '', 500),
+      currentPage: currentPage,
+      itemsPerPage: pageSize,
+      question: useDebounce(search, 500),
     },
   })
+
   const nameCardForDelete = cardsData?.items.find(card => card.id === cardForDeleteId)?.question
 
   const answerForEdit = cardsData?.items.find(card => card.id === cardForEditId)?.answer
@@ -88,19 +97,55 @@ export const useDeckPage = (): DeckPageData => {
 
   const isMyDeck = deckData?.userId === ownerId
 
+  const handleOnPageCahnge = (pageNumber: number) => {
+    setSearchParams(params => {
+      params.set('currentPage', pageNumber.toString())
+      params.set('pageSize', pageSize.toString())
+      if (search) {
+        params.set('search', search)
+      } else {
+        params.delete('search')
+      }
+
+      return params
+    })
+  }
+  const handleOnPageSizeChange = (size: number) => {
+    setSearchParams(params => {
+      params.set('currentPage', '1')
+      params.set('pageSize', size.toString())
+      if (search) {
+        params.set('search', search)
+      } else {
+        params.delete('search')
+      }
+
+      return params
+    })
+  }
   const handleClear = () => {
-    setSearchParams('')
+    setSearchParams(params => {
+      params.delete('search')
+      params.set('currentPage', currentPage.toString())
+      params.set('pageSize', pageSize.toString())
+
+      return params
+    })
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value
 
-    if (value.length) {
-      searchParams.set('search', value)
-    } else {
-      searchParams.delete('search')
-    }
-    setSearchParams(searchParams)
+    setSearchParams(params => {
+      if (value.length) {
+        params.set('search', value)
+      } else {
+        params.delete('search')
+      }
+      params.set('currentPage', '1')
+
+      return params
+    })
   }
 
   const handleOpenDeleteDeckModal = () => {
@@ -165,6 +210,8 @@ export const useDeckPage = (): DeckPageData => {
     handleCloseDeleteDeckModal,
     handleCloseEditCardModal,
     handleCloseEditDeckModal,
+    handleOnPageCahnge,
+    handleOnPageSizeChange,
     handleOpenAddCardModal,
     handleOpenDeleteCardModal,
     handleOpenDeleteDeckModal,
@@ -182,6 +229,6 @@ export const useDeckPage = (): DeckPageData => {
     ownerId,
     questionForEdit,
     questionImgForEdit,
-    search: searchParams.get('search') || '',
+    search,
   }
 }

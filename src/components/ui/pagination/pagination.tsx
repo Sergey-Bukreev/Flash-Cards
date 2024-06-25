@@ -22,7 +22,8 @@ export const Pagination = (props: PaginatorPropsType) => {
     totalCount,
   })
 
-  if (currentPage === 0 || paginationRange.length < 2) {
+  console.log(currentPage, paginationRange)
+  if (currentPage === 0 || paginationRange.length < 1) {
     return null
   }
 
