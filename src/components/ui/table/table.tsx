@@ -1,5 +1,7 @@
 import { ComponentPropsWithoutRef, FC } from 'react'
 
+import { ArrowDownIcon } from '@/components/ui/select/icons/arrow-down-icon'
+import { ArrowUpIcon } from '@/components/ui/select/icons/arrow-up-icon'
 import { Typography } from '@/components/ui/typography'
 import clsx from 'clsx'
 
@@ -60,4 +62,71 @@ export const PolymorphicTable: FC<TableProps> = (props: TableProps) => {
     </Root>
   )
 }
-export const CustomTable = { Body, DataCell, Head, HeadCell, Root, Row }
+
+export type Column = {
+  key: string
+  sortable?: boolean
+  title: string
+}
+export type Sort = {
+  direction: 'asc' | 'desc'
+  key: string
+} | null
+
+const TableHeader: FC<
+  Omit<
+    {
+      columns: Column[]
+      onSort?: (sort: Sort) => void
+      sort?: Sort
+    } & ComponentPropsWithoutRef<'thead'>,
+    'children'
+  >
+> = ({ columns, onSort, sort, ...restProps }) => {
+  const handleSort = (key: string, sortable?: boolean) => () => {
+    if (!onSort || !sortable) {
+      return
+    }
+
+    if (sort?.key !== key) {
+      return onSort({ direction: 'asc', key })
+    }
+
+    if (sort.direction === 'desc') {
+      return onSort(null)
+    }
+
+    return onSort({
+      direction: sort?.direction === 'asc' ? 'desc' : 'asc',
+      key,
+    })
+  }
+
+  return (
+    <CustomTable.Head {...restProps}>
+      <CustomTable.Row>
+        {columns.map(({ key, sortable = true, title }) => (
+          <CustomTable.HeadCell
+            className={s.tableHeadTitle}
+            key={key}
+            onClick={handleSort(key, sortable)}
+            style={{ width: key === 'name' ? 'auto' : '200px' }}
+          >
+            {title}
+            {sort && sort.key === key && (
+              <span>
+                {sort.direction === 'asc' ? (
+                  <ArrowUpIcon height={16} width={16} />
+                ) : (
+                  <ArrowDownIcon height={16} width={16} />
+                )}
+              </span>
+            )}
+          </CustomTable.HeadCell>
+        ))}
+      </CustomTable.Row>
+    </CustomTable.Head>
+  )
+}
+
+export const CustomTable = { Body, DataCell, Head, HeadCell, Root, Row, TableHeader }

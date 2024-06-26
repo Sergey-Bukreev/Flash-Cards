@@ -48,7 +48,7 @@ const publicRoutes: RouteObject[] = [
 const privateRoutes: RouteObject[] = [
   {
     element: <DecksPage />,
-    path: '/decks',
+    path: '/',
   },
   {
     element: <DeckPage />,
@@ -68,11 +68,11 @@ function PrivateRoutes() {
   const { isAuthenticated } = useAuthContext()
   const location = useLocation()
 
-  if (location.pathname === '/create-new-password/:token') {
-    return
+  if (!isAuthenticated && location.pathname !== '/create-new-password/:token') {
+    return <Navigate to={'/sign-in'} />
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/sign-in'} />
+  return <Outlet />
 }
 
 export const router = createBrowserRouter([
@@ -85,7 +85,6 @@ export const router = createBrowserRouter([
       ...publicRoutes,
     ],
     element: <Layout />,
-    path: '/',
   },
 ])
 
