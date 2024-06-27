@@ -1,4 +1,3 @@
-import { router } from '@/router'
 import {
   BaseQueryFn,
   FetchArgs,
@@ -64,7 +63,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           // retry the initial query
           result = await baseQuery(args, api, extraOptions)
         } else {
-          router.navigate('/sign-in')
+          // router.navigate('/sign-in')
         }
       } finally {
         release()

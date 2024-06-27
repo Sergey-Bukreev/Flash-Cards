@@ -1,7 +1,6 @@
 import { ComponentPropsWithoutRef, FC } from 'react'
 
 import { ArrowDownIcon } from '@/components/ui/select/icons/arrow-down-icon'
-import { ArrowUpIcon } from '@/components/ui/select/icons/arrow-up-icon'
 import { Typography } from '@/components/ui/typography'
 import clsx from 'clsx'
 
@@ -63,35 +62,35 @@ export const PolymorphicTable: FC<TableProps> = (props: TableProps) => {
   )
 }
 
-export type Column = {
-  key: string
-  sortable?: boolean
-  title: string
-}
 export type Sort = {
   direction: 'asc' | 'desc'
   key: string
 } | null
 
-const TableHeader: FC<
-  Omit<
-    {
-      columns: Column[]
-      onSort?: (sort: Sort) => void
-      sort?: Sort
-    } & ComponentPropsWithoutRef<'thead'>,
-    'children'
-  >
-> = ({ columns, onSort, sort, ...restProps }) => {
+export type Column = {
+  key: string
+  sortable?: boolean
+  title: string
+}
+
+export type TableHeaderProps = Omit<
+  {
+    columns: Column[]
+    onSort?: (sort: Sort) => void
+    sort?: Sort
+  } & ComponentPropsWithoutRef<'thead'>,
+  'children'
+>
+
+export const TableHeader: FC<TableHeaderProps> = ({ columns, onSort, sort, ...restProps }) => {
   const handleSort = (key: string, sortable?: boolean) => () => {
-    if (!onSort || !sortable) {
+    if (!onSort || sortable === false) {
       return
     }
 
     if (sort?.key !== key) {
       return onSort({ direction: 'asc', key })
     }
-
     if (sort.direction === 'desc') {
       return onSort(null)
     }
@@ -105,25 +104,24 @@ const TableHeader: FC<
   return (
     <CustomTable.Head {...restProps}>
       <CustomTable.Row>
-        {columns.map(({ key, sortable = true, title }) => (
-          <CustomTable.HeadCell
-            className={s.tableHeadTitle}
-            key={key}
-            onClick={handleSort(key, sortable)}
-            style={{ width: key === 'name' ? 'auto' : '200px' }}
-          >
-            {title}
-            {sort && sort.key === key && (
-              <span>
-                {sort.direction === 'asc' ? (
-                  <ArrowUpIcon height={16} width={16} />
-                ) : (
-                  <ArrowDownIcon height={16} width={16} />
-                )}
-              </span>
-            )}
-          </CustomTable.HeadCell>
-        ))}
+        {columns.map(({ key, sortable, title }) => {
+          const sortTerms = sort && sort.key === key
+          const classes = {
+            cell: clsx(!(sortable === false) && s.hover),
+            icon: clsx(s.icon, sortTerms && sort.direction === 'desc' && s.down),
+          }
+
+          return (
+            <CustomTable.HeadCell
+              className={classes.cell}
+              key={key}
+              onClick={handleSort(key, sortable)}
+            >
+              {title}
+              {sortTerms && <ArrowDownIcon className={classes.icon} />}
+            </CustomTable.HeadCell>
+          )
+        })}
       </CustomTable.Row>
     </CustomTable.Head>
   )
