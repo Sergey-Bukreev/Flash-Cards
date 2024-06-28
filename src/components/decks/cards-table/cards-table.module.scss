@@ -16,7 +16,7 @@
   }
 
   .date {
-    min-width: 100px;
+    min-width: 140px;
   }
 
   .controls {
@@ -43,6 +43,13 @@
   @media (width <= 768px) {
     .question,
     .answer {
+      width: 180px;
+      padding: 8px 12px;
+      font-size: 0.85em;
+    }
+
+    .date {
+      width: 100px;
       padding: 8px 12px;
       font-size: 0.85em;
     }
@@ -51,8 +58,14 @@
       width: 80px;
     }
 
-    .buttons {
-      gap: 6px;
+    .grade {
+      width: 140px;
+      padding: 8px 12px;
+      font-size: 0.85em;
+    }
+
+    .iconsWrapper {
+      gap: 2px;
     }
   }
 }

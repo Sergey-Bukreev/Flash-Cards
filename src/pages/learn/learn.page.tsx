@@ -35,7 +35,7 @@ export const LearnPage = () => {
   return (
     <Page className={s.root}>
       <div className={s.backContainer}>
-        <BackButton />
+        <BackButton link={`/decks/${deckId!}`} text={'Back to Deck Page'} />
       </div>
       <Card className={s.content}>
         <Typography as={'h1'} className={s.title} variant={'h1'}>

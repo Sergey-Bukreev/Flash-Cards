@@ -43,6 +43,7 @@ export const DeckPage: React.FC = () => {
     handleOpenEditCardModal,
     handleOpenEditDeckModal,
     handleSearchChange,
+    handleSort,
     isLoading,
     isMyDeck,
     isOpenAddCardModal,
@@ -55,6 +56,7 @@ export const DeckPage: React.FC = () => {
     questionForEdit,
     questionImgForEdit,
     search,
+    sort,
   } = useDeckPage()
 
   if (isLoading) {
@@ -64,10 +66,34 @@ export const DeckPage: React.FC = () => {
     return <Typography variant={'h1'}>{`Error: ${JSON.stringify(error)}`}</Typography>
   }
 
+  const renderButton = () => {
+    if (isMyDeck) {
+      return (
+        <Button onClick={handleOpenAddCardModal} variant={'primary'}>
+          {'Add New Card'}
+        </Button>
+      )
+    }
+
+    if (deckData?.cardsCount === 0) {
+      return (
+        <Button disabled variant={'secondary'}>
+          {'Learn'}
+        </Button>
+      )
+    }
+
+    return (
+      <Button as={Link} to={`/decks/${deckId}/learn`}>
+        {'Learn'}
+      </Button>
+    )
+  }
+
   return (
     <Page className={s.page}>
       <div className={s.backContainer}>
-        <BackButton />
+        <BackButton link={'/'} text={'Back to Decks List'} />
       </div>
 
       <div className={s.pageTitle}>
@@ -81,15 +107,7 @@ export const DeckPage: React.FC = () => {
             />
           )}
         </div>
-        {isMyDeck ? (
-          <Button onClick={handleOpenAddCardModal} variant={'primary'}>
-            {'Add New Card'}
-          </Button>
-        ) : (
-          <Button as={Link} to={`/decks/${deckId}/learn`}>
-            {'Learn'}
-          </Button>
-        )}
+        {renderButton()}
       </div>
       {deckData?.cardsCount !== 0 ? (
         <>
@@ -105,6 +123,8 @@ export const DeckPage: React.FC = () => {
             currentUserId={ownerId}
             onDeleteClick={handleOpenDeleteCardModal}
             onEditClick={handleOpenEditCardModal}
+            onSort={handleSort}
+            sort={sort}
           />
         </>
       ) : (

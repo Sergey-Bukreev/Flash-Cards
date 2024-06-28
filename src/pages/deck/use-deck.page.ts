@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { useDebounce } from '@/components/common/hooks/use-debounce'
+import { Sort } from '@/components/ui/table'
 import { useMeQuery } from '@/services/auth/auth.service'
 import { User } from '@/services/auth/auth.types'
 import { useGetCardsQuery } from '@/services/cards/card.service'
@@ -32,6 +33,7 @@ interface DeckPageData {
   handleOpenEditCardModal: (id: string) => void
   handleOpenEditDeckModal: () => void
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSort: (sort: Sort | null) => void
   isLoading: boolean
   isMyDeck: boolean
   isOpenAddCardModal: boolean
@@ -44,6 +46,7 @@ interface DeckPageData {
   questionForEdit: string | undefined
   questionImgForEdit: null | string | undefined
   search: string
+  sort: Sort
 }
 
 export const useDeckPage = (): DeckPageData => {
@@ -58,6 +61,11 @@ export const useDeckPage = (): DeckPageData => {
   const [isOpenEditCardModal, setIsOpenEditCardModal] = useState<boolean>(false)
 
   const [cardForEditId, setCardForEditId] = useState<null | string>(null)
+
+  const [sort, setSort] = useState<Sort>({
+    direction: (searchParams.get('sortDirection') as 'asc' | 'desc') || 'asc',
+    key: searchParams.get('sortKey') || 'updated',
+  })
 
   const navigate = useNavigate()
   const { deckId } = useParams()
@@ -81,6 +89,7 @@ export const useDeckPage = (): DeckPageData => {
       answer: '',
       currentPage: currentPage,
       itemsPerPage: pageSize,
+      orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
       question: useDebounce(search, 500),
     },
   })
@@ -96,6 +105,18 @@ export const useDeckPage = (): DeckPageData => {
   const ownerId = (me as User)?.id
 
   const isMyDeck = deckData?.userId === ownerId
+
+  const handleSort = (sort: Sort | null) => {
+    setSort(sort)
+    if (sort) {
+      searchParams.set('sortKey', sort.key)
+      searchParams.set('sortDirection', sort.direction)
+    } else {
+      searchParams.delete('sortKey')
+      searchParams.delete('sortDirection')
+    }
+    setSearchParams(searchParams)
+  }
 
   const handleOnPageCahnge = (pageNumber: number) => {
     setSearchParams(params => {
@@ -218,6 +239,7 @@ export const useDeckPage = (): DeckPageData => {
     handleOpenEditCardModal,
     handleOpenEditDeckModal,
     handleSearchChange,
+    handleSort,
     isLoading,
     isMyDeck,
     isOpenAddCardModal,
@@ -230,5 +252,6 @@ export const useDeckPage = (): DeckPageData => {
     questionForEdit,
     questionImgForEdit,
     search,
+    sort,
   }
 }

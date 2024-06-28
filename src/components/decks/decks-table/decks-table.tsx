@@ -29,10 +29,12 @@ const columns: Column[] = [
   },
   {
     key: 'author.name',
+    sortable: false,
     title: 'Created By',
   },
   {
     key: 'actions',
+    sortable: false,
     title: '',
   },
 ]

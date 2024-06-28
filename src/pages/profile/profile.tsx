@@ -43,7 +43,7 @@ export const ProfilePage = () => {
   return (
     <Page className={s.root}>
       <div className={s.backContainer}>
-        <BackButton />
+        <BackButton link={'/'} text={'Back to Decks List'} />
       </div>
       <Card className={s.card}>
         <Typography className={s.title} variant={'h1'}>
