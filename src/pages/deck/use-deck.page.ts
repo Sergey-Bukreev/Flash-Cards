@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { useDebounce } from '@/components/common/hooks/use-debounce'
+import { Sort } from '@/components/ui/table'
 import { useMeQuery } from '@/services/auth/auth.service'
 import { User } from '@/services/auth/auth.types'
 import { useGetCardsQuery } from '@/services/cards/card.service'
@@ -24,12 +25,15 @@ interface DeckPageData {
   handleCloseDeleteDeckModal: () => void
   handleCloseEditCardModal: () => void
   handleCloseEditDeckModal: () => void
+  handleOnPageCahnge: (pageNumber: number) => void
+  handleOnPageSizeChange: (size: number) => void
   handleOpenAddCardModal: () => void
   handleOpenDeleteCardModal: (id: string) => void
   handleOpenDeleteDeckModal: () => void
   handleOpenEditCardModal: (id: string) => void
   handleOpenEditDeckModal: () => void
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
+  handleSort: (sort: Sort | null) => void
   isLoading: boolean
   isMyDeck: boolean
   isOpenAddCardModal: boolean
@@ -42,6 +46,7 @@ interface DeckPageData {
   questionForEdit: string | undefined
   questionImgForEdit: null | string | undefined
   search: string
+  sort: Sort
 }
 
 export const useDeckPage = (): DeckPageData => {
@@ -57,8 +62,17 @@ export const useDeckPage = (): DeckPageData => {
 
   const [cardForEditId, setCardForEditId] = useState<null | string>(null)
 
+  const [sort, setSort] = useState<Sort>({
+    direction: (searchParams.get('sortDirection') as 'asc' | 'desc') || 'asc',
+    key: searchParams.get('sortKey') || 'updated',
+  })
+
   const navigate = useNavigate()
   const { deckId } = useParams()
+
+  const pageSize = Number(searchParams.get('pageSize')) || 10
+  const currentPage = Number(searchParams.get('currentPage')) || 1
+  const search = searchParams.get('search') || ''
 
   const { data: deckData, refetch: refetchDeck } = useGetDeckByIdQuery({
     id: deckId || '',
@@ -73,9 +87,13 @@ export const useDeckPage = (): DeckPageData => {
     id: deckId || '',
     params: {
       answer: '',
-      question: useDebounce(searchParams.get('search') || '', 500),
+      currentPage: currentPage,
+      itemsPerPage: pageSize,
+      orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
+      question: useDebounce(search, 500),
     },
   })
+
   const nameCardForDelete = cardsData?.items.find(card => card.id === cardForDeleteId)?.question
 
   const answerForEdit = cardsData?.items.find(card => card.id === cardForEditId)?.answer
@@ -88,19 +106,67 @@ export const useDeckPage = (): DeckPageData => {
 
   const isMyDeck = deckData?.userId === ownerId
 
+  const handleSort = (sort: Sort | null) => {
+    setSort(sort)
+    if (sort) {
+      searchParams.set('sortKey', sort.key)
+      searchParams.set('sortDirection', sort.direction)
+    } else {
+      searchParams.delete('sortKey')
+      searchParams.delete('sortDirection')
+    }
+    setSearchParams(searchParams)
+  }
+
+  const handleOnPageCahnge = (pageNumber: number) => {
+    setSearchParams(params => {
+      params.set('currentPage', pageNumber.toString())
+      params.set('pageSize', pageSize.toString())
+      if (search) {
+        params.set('search', search)
+      } else {
+        params.delete('search')
+      }
+
+      return params
+    })
+  }
+  const handleOnPageSizeChange = (size: number) => {
+    setSearchParams(params => {
+      params.set('currentPage', '1')
+      params.set('pageSize', size.toString())
+      if (search) {
+        params.set('search', search)
+      } else {
+        params.delete('search')
+      }
+
+      return params
+    })
+  }
   const handleClear = () => {
-    setSearchParams('')
+    setSearchParams(params => {
+      params.delete('search')
+      params.set('currentPage', currentPage.toString())
+      params.set('pageSize', pageSize.toString())
+
+      return params
+    })
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value
 
-    if (value.length) {
-      searchParams.set('search', value)
-    } else {
-      searchParams.delete('search')
-    }
-    setSearchParams(searchParams)
+    setSearchParams(params => {
+      if (value.length) {
+        params.set('search', value)
+      } else {
+        params.delete('search')
+      }
+      params.set('currentPage', '1')
+
+      return params
+    })
   }
 
   const handleOpenDeleteDeckModal = () => {
@@ -109,7 +175,7 @@ export const useDeckPage = (): DeckPageData => {
 
   const handleCloseDeleteDeckModal = () => {
     setIsOpenDeleteDeckModal(false)
-    navigate('/')
+    navigate('/decks')
   }
 
   const handleOpenEditDeckModal = () => {
@@ -165,12 +231,15 @@ export const useDeckPage = (): DeckPageData => {
     handleCloseDeleteDeckModal,
     handleCloseEditCardModal,
     handleCloseEditDeckModal,
+    handleOnPageCahnge,
+    handleOnPageSizeChange,
     handleOpenAddCardModal,
     handleOpenDeleteCardModal,
     handleOpenDeleteDeckModal,
     handleOpenEditCardModal,
     handleOpenEditDeckModal,
     handleSearchChange,
+    handleSort,
     isLoading,
     isMyDeck,
     isOpenAddCardModal,
@@ -182,6 +251,7 @@ export const useDeckPage = (): DeckPageData => {
     ownerId,
     questionForEdit,
     questionImgForEdit,
-    search: searchParams.get('search') || '',
+    search,
+    sort,
   }
 }

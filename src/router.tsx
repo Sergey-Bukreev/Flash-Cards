@@ -4,6 +4,7 @@ import {
   RouteObject,
   RouterProvider,
   createBrowserRouter,
+  useLocation,
 } from 'react-router-dom'
 
 import { Layout, useAuthContext } from '@/components/layout/layout'
@@ -65,8 +66,13 @@ const privateRoutes: RouteObject[] = [
 
 function PrivateRoutes() {
   const { isAuthenticated } = useAuthContext()
+  const location = useLocation()
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={'/sign-in'} />
+  if (!isAuthenticated && location.pathname !== '/create-new-password/:token') {
+    return <Navigate to={'/sign-in'} />
+  }
+
+  return <Outlet />
 }
 
 export const router = createBrowserRouter([

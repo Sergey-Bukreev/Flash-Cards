@@ -1,5 +1,6 @@
 import { ComponentPropsWithoutRef, FC } from 'react'
 
+import { ArrowDownIcon } from '@/components/ui/select/icons/arrow-down-icon'
 import { Typography } from '@/components/ui/typography'
 import clsx from 'clsx'
 
@@ -60,4 +61,70 @@ export const PolymorphicTable: FC<TableProps> = (props: TableProps) => {
     </Root>
   )
 }
-export const CustomTable = { Body, DataCell, Head, HeadCell, Root, Row }
+
+export type Sort = {
+  direction: 'asc' | 'desc'
+  key: string
+} | null
+
+export type Column = {
+  key: string
+  sortable?: boolean
+  title: string
+}
+
+export type TableHeaderProps = Omit<
+  {
+    columns: Column[]
+    onSort?: (sort: Sort) => void
+    sort?: Sort
+  } & ComponentPropsWithoutRef<'thead'>,
+  'children'
+>
+
+export const TableHeader: FC<TableHeaderProps> = ({ columns, onSort, sort, ...restProps }) => {
+  const handleSort = (key: string, sortable?: boolean) => () => {
+    if (!onSort || sortable === false) {
+      return
+    }
+
+    if (sort?.key !== key) {
+      return onSort({ direction: 'asc', key })
+    }
+    if (sort.direction === 'desc') {
+      return onSort(null)
+    }
+
+    return onSort({
+      direction: sort?.direction === 'asc' ? 'desc' : 'asc',
+      key,
+    })
+  }
+
+  return (
+    <CustomTable.Head {...restProps}>
+      <CustomTable.Row>
+        {columns.map(({ key, sortable, title }) => {
+          const sortTerms = sort && sort.key === key
+          const classes = {
+            cell: clsx(!(sortable === false) && s.hover),
+            icon: clsx(s.icon, sortTerms && sort.direction === 'desc' && s.down),
+          }
+
+          return (
+            <CustomTable.HeadCell
+              className={classes.cell}
+              key={key}
+              onClick={handleSort(key, sortable)}
+            >
+              {title}
+              {sortTerms && <ArrowDownIcon className={classes.icon} />}
+            </CustomTable.HeadCell>
+          )
+        })}
+      </CustomTable.Row>
+    </CustomTable.Head>
+  )
+}
+
+export const CustomTable = { Body, DataCell, Head, HeadCell, Root, Row, TableHeader }

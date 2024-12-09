@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { CreateDeckModalProps } from '@/components/decks/create-deck-modal'
 import { DeckForm } from '@/components/forms/deck-form'
 import { FormValues } from '@/components/forms/deck-form/use-deck-form'
@@ -31,10 +33,10 @@ export const EditDeckModal = ({
   const handleOnSubmit = async (data: FormValues) => {
     try {
       await updateDeck({ body: data, id } as UpdateDecksArgs).unwrap()
-
+      toast.success(`Deck "${name}" updated successfully.`)
       onClose()
-    } catch (error) {
-      console.error('Failed to update deck:', error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? `Failed to update Deck "${name}"`)
     }
   }
 

@@ -1,41 +1,65 @@
 import { Link, useNavigate } from 'react-router-dom'
 
+import { StarIcon } from '@/assets/star-icon'
 import { Button } from '@/components/ui/button'
 import { DeleteIcon } from '@/components/ui/drop-down/icons/delete-icon'
 import { EditIcon } from '@/components/ui/drop-down/icons/edit-icon'
 import { PlayIcon } from '@/components/ui/drop-down/icons/play-icon'
-import { CustomTable } from '@/components/ui/table'
+import { Column, CustomTable, Sort } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { Deck } from '@/services/decks/decks.type'
+import clsx from 'clsx'
 
 import s from './decks-table.module.scss'
 
 import baseDeckImage from '../../../assets/base-deck-image.png'
+
+const columns: Column[] = [
+  {
+    key: 'name',
+    title: 'Name',
+  },
+  {
+    key: 'cardsCount',
+    title: 'Cards',
+  },
+  {
+    key: 'updated',
+    title: 'Last Updated',
+  },
+  {
+    key: 'author.name',
+    sortable: false,
+    title: 'Created By',
+  },
+  {
+    key: 'actions',
+    sortable: false,
+    title: '',
+  },
+]
 
 export type DecksTableProps = {
   currentUserId: string
   decks: Deck[] | undefined
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onFavoriteClick: (id: string, isFavorite: boolean) => void
+  onSort?: (key: Sort) => void
+  sort?: Sort
 }
 
 export const DecksTable = (props: DecksTableProps) => {
-  const { currentUserId, decks, onDeleteClick, onEditClick } = props
+  const { currentUserId, decks, onDeleteClick, onEditClick, onFavoriteClick, onSort, sort } = props
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
+  const handleFavoriteClick = (id: string, isFavorite: boolean) => () =>
+    onFavoriteClick(id, isFavorite)
   const navigate = useNavigate()
 
   return (
     <CustomTable.Root className={s.tableRoot}>
-      <CustomTable.Head>
-        <CustomTable.Row>
-          <CustomTable.HeadCell>{'Name'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Cards'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Last Updated'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Created by'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell></CustomTable.HeadCell>
-        </CustomTable.Row>
-      </CustomTable.Head>
+      <CustomTable.TableHeader columns={columns} onSort={onSort} sort={sort} />
       <CustomTable.Body>
         {decks?.map(deck => {
           const updateAt = new Date(deck.updated).toLocaleDateString('ru-Ru')
@@ -64,6 +88,17 @@ export const DecksTable = (props: DecksTableProps) => {
                     variant={'icon'}
                   >
                     <PlayIcon disabled={deck.cardsCount === 0} height={20} width={20} />
+                  </Button>
+                  <Button
+                    className={s.button}
+                    onClick={handleFavoriteClick(deck.id, deck.isFavorite)}
+                    variant={'icon'}
+                  >
+                    <StarIcon
+                      className={clsx(s.favoriteIcon, deck.isFavorite && s.selected)}
+                      height={20}
+                      width={20}
+                    />
                   </Button>
                   <Button
                     className={s.button}

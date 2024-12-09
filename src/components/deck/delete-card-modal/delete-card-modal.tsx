@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ModalWindow } from '@/components/ui/modal'
@@ -17,9 +19,10 @@ export const DeleteCardModal = ({ id, isOpen, name, onClose }: DeleteCardModalPr
   const handleOnDelete = async () => {
     try {
       await deleteCard({ id }).unwrap()
+      toast.success(`Card "${name}" deleted successfully.`)
       onClose()
-    } catch (error) {
-      console.error('Failed to delete the card:', error)
+    } catch (error: any) {
+      toast.error(error.data.message ?? `Failed to delete the card "${name}"`)
     }
   }
 

@@ -19,7 +19,7 @@ export const Header = (props: HeaderProps) => {
   return (
     <header className={s.header}>
       <div className={s.contentWrapper}>
-        <Link to={'https://it-incubator.io'}>
+        <Link to={'https://github.com/Sergey-Bukreev/Flash-Cards'}>
           <LogoIcon />
         </Link>
         {isAuthenticated && (

@@ -10,11 +10,13 @@ import s from './back-button.module.scss'
 
 export type BackButtonProps = {
   className?: string
+  link: string
   text?: string
 } & ButtonProps
 
 export const BackButton: FC<BackButtonProps> = ({
   className,
+  link,
   text = 'Back to Previous Page',
   ...rest
 }: BackButtonProps) => {
@@ -22,7 +24,7 @@ export const BackButton: FC<BackButtonProps> = ({
 
   const onHandleBack = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    navigate(-1)
+    navigate(link)
   }
 
   return (

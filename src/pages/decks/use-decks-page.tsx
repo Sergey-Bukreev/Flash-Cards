@@ -1,9 +1,16 @@
 import { ChangeEvent, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { useDebounce } from '@/components/common/hooks/use-debounce'
+import { Sort } from '@/components/ui/table'
 import { useMeQuery } from '@/services/auth/auth.service'
-import { useGetDecksQuery, useGetMinMaxCardsQuery } from '@/services/decks/decks.sevice'
+import {
+  useAddDeckToFavoritesMutation,
+  useGetDecksQuery,
+  useGetMinMaxCardsQuery,
+  useRemoveDeckFromFavoritesMutation,
+} from '@/services/decks/decks.sevice'
 import { DecksListResponse } from '@/services/decks/decks.type'
 
 interface DecksPageData {
@@ -22,6 +29,7 @@ interface DecksPageData {
   handleCloseAddDeckModal: () => void
   handleCloseDeleteDeckModal: () => void
   handleCloseEditDeckModal: () => void
+  handleFavoriteClick: (id: string, isFavorite: boolean) => void
   handleOnPageChange: (pageNumber: number) => void
   handleOnPageSizeChange: (size: number) => void
   handleOpenAddDeckModal: () => void
@@ -29,6 +37,7 @@ interface DecksPageData {
   handleOpenEditDeckModal: (id: string) => void
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
   handleSliderChange: (value: number[]) => void
+  handleSort: (sort: Sort | null) => void
   handleTabChange: (tabValue: string) => void
   isLoading: boolean
   isOpenAddDeckModal: boolean
@@ -40,8 +49,10 @@ interface DecksPageData {
   resetFilters: () => void
   search: string
   sliderValue: number[]
+  sort: Sort
   tabs: { name: string; value: string }[]
 }
+
 const tabs = [
   { name: 'All Decks', value: 'all' },
   { name: 'My Decks', value: 'my' },
@@ -54,6 +65,8 @@ export const useDecksPage = (): DecksPageData => {
 
   const [searchParams, setSearchParams] = useSearchParams()
   const { data: minMaxCardsData } = useGetMinMaxCardsQuery()
+  const [addDeckToFavorites] = useAddDeckToFavoritesMutation()
+  const [removeDeckFromFavorites] = useRemoveDeckFromFavoritesMutation()
 
   const search = searchParams.get('search') || ''
   const debouncedSearch = useDebounce(search, 500)
@@ -67,6 +80,10 @@ export const useDecksPage = (): DecksPageData => {
   const [sliderValue, setSliderValue] = useState<number[]>([minCardsCount, maxCardsCount])
   const debouncedSliderValue = useDebounce(sliderValue, 500)
   const [currentTab, setCurrentTab] = useState<string>('all')
+  const [sort, setSort] = useState<Sort>({
+    direction: (searchParams.get('sortDirection') as 'asc' | 'desc') || 'asc',
+    key: searchParams.get('sortKey') || 'updated',
+  })
 
   const { data, error, isLoading } = useGetDecksQuery({
     authorId: currentTab === 'my' ? currentUserId : '',
@@ -75,13 +92,16 @@ export const useDecksPage = (): DecksPageData => {
     itemsPerPage: pageSize,
     maxCardsCount: debouncedSliderValue[1],
     minCardsCount: debouncedSliderValue[0],
+    orderBy: sort ? `${sort.key}-${sort.direction}` : undefined,
     ...(debouncedSearch ? { name: debouncedSearch } : {}),
   })
+
   const [isOpenAddDeckModal, setIsOpenAddDeckModal] = useState<boolean>(false)
   const [isOpenDeleteDeckModal, setIsOpenDeleteDeckModal] = useState<boolean>(false)
   const [isOpenEditDeckModal, setIsOpenEditDeckModal] = useState<boolean>(false)
   const [deckToEditID, setDeckToEditID] = useState<string>('')
   const [deckToDeleteID, setDeckToDeleteID] = useState<string>('')
+
   const deckToDeleteName = data?.items?.find(deck => deck.id === deckToDeleteID)?.name
   const deckToEditName = data?.items?.find(deck => deck.id === deckToEditID)?.name
   const deckToEditCover = data?.items?.find(deck => deck.id === deckToEditID)?.cover
@@ -148,6 +168,17 @@ export const useDecksPage = (): DecksPageData => {
     setSearchParams(searchParams)
   }
 
+  const handleSort = (sort: Sort | null) => {
+    setSort(sort)
+    if (sort) {
+      searchParams.set('sortKey', sort.key)
+      searchParams.set('sortDirection', sort.direction)
+    } else {
+      searchParams.delete('sortKey')
+      searchParams.delete('sortDirection')
+    }
+    setSearchParams(searchParams)
+  }
   const resetFilters = () => {
     setSearchParams({
       currentPage: '1',
@@ -158,6 +189,7 @@ export const useDecksPage = (): DecksPageData => {
     })
     setSliderValue([minCardsValue, maxCardsValue])
     setCurrentTab('all')
+    setSort(null)
   }
 
   const handleOpenAddDeckModal = () => {
@@ -188,6 +220,24 @@ export const useDecksPage = (): DecksPageData => {
     setIsOpenEditDeckModal(false)
   }
 
+  const handleFavoriteClick = async (id: string, isFavorite: boolean) => {
+    if (isFavorite) {
+      try {
+        await removeDeckFromFavorites({ id })
+        toast.success('Deck removed from Favorites')
+      } catch (error: any) {
+        toast.error(error.data.message ?? 'Failed to delete deck from Favorites')
+      }
+    } else {
+      try {
+        await addDeckToFavorites({ id })
+        toast.success('Deck Adding To Favorites')
+      } catch (error: any) {
+        toast.error(error.data.message ?? 'Failed to add deck to Favorites')
+      }
+    }
+  }
+
   return {
     currentPage,
     currentTab,
@@ -204,6 +254,7 @@ export const useDecksPage = (): DecksPageData => {
     handleCloseAddDeckModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
+    handleFavoriteClick,
     handleOnPageChange,
     handleOnPageSizeChange,
     handleOpenAddDeckModal,
@@ -211,6 +262,7 @@ export const useDecksPage = (): DecksPageData => {
     handleOpenEditDeckModal,
     handleSearchChange,
     handleSliderChange,
+    handleSort,
     handleTabChange,
     isLoading,
     isOpenAddDeckModal,
@@ -222,6 +274,7 @@ export const useDecksPage = (): DecksPageData => {
     resetFilters,
     search,
     sliderValue,
+    sort,
     tabs,
   }
 }

@@ -1,5 +1,5 @@
-import { CreateDeckModal } from '@/components/decks/create-deck-modal/create-deck-modal'
-import { DecksTable } from '@/components/decks/decks-table/decks-table'
+import { CreateDeckModal } from '@/components/decks/create-deck-modal'
+import { DecksTable } from '@/components/decks/decks-table'
 import { DeleteDeckModal } from '@/components/decks/delete-deck-modal'
 import { EditDeckModal } from '@/components/decks/edit-deck-modal/edit-deck-modal'
 import { Button } from '@/components/ui/button'
@@ -31,6 +31,7 @@ export function DecksPage() {
     handleCloseAddDeckModal,
     handleCloseDeleteDeckModal,
     handleCloseEditDeckModal,
+    handleFavoriteClick,
     handleOnPageChange,
     handleOnPageSizeChange,
     handleOpenAddDeckModal,
@@ -38,6 +39,7 @@ export function DecksPage() {
     handleOpenEditDeckModal,
     handleSearchChange,
     handleSliderChange,
+    handleSort,
     handleTabChange,
     isLoading,
     isOpenAddDeckModal,
@@ -49,12 +51,14 @@ export function DecksPage() {
     resetFilters,
     search,
     sliderValue,
+    sort,
     tabs,
   } = useDecksPage()
 
   if (isLoading) {
     return <Spiner />
   }
+
   if (error) {
     return <Typography variant={'h1'}>{`Error: ${JSON.stringify(error)}`}</Typography>
   }
@@ -63,7 +67,7 @@ export function DecksPage() {
     <Page>
       <div className={s.page}>
         <div className={s.pageTitle}>
-          <Typography variant={'h1'}>{'Decks List'}</Typography>
+          <Typography variant={'h1'}>Decks List</Typography>
           <Button onClick={handleOpenAddDeckModal} variant={'primary'}>
             {'Create Deck'}
           </Button>
@@ -91,7 +95,6 @@ export function DecksPage() {
               value={sliderValue}
             />
           </div>
-
           <div className={s.buttonWrapper}>
             <Button onClick={resetFilters} variant={'secondary'}>
               {'Reset Filters'}
@@ -104,13 +107,18 @@ export function DecksPage() {
           decks={data?.items}
           onDeleteClick={handleOpenDeleteDeckModal}
           onEditClick={handleOpenEditDeckModal}
+          onFavoriteClick={handleFavoriteClick}
+          onSort={handleSort}
+          sort={sort}
         />
+
         <DeleteDeckModal
           id={deckToDeleteID}
           isOpen={isOpenDeleteDeckModal}
           name={deckToDeleteName}
           onClose={handleCloseDeleteDeckModal}
         />
+
         <EditDeckModal
           cover={deckToEditCover || null}
           id={deckToEditID}
@@ -119,6 +127,7 @@ export function DecksPage() {
           name={deckToEditName || ''}
           onClose={handleCloseEditDeckModal}
         />
+
         <div className={s.pagination}>
           <Pagination
             currentPage={currentPage ?? 1}

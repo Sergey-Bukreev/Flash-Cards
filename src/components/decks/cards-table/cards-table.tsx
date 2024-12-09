@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { DeleteIcon } from '@/components/ui/drop-down/icons/delete-icon'
 import { EditIcon } from '@/components/ui/drop-down/icons/edit-icon'
 import { Rating } from '@/components/ui/rating'
-import { CustomTable } from '@/components/ui/table'
+import { Column, CustomTable, Sort, TableHeader } from '@/components/ui/table'
 import { Typography } from '@/components/ui/typography'
 import { Card } from '@/services/cards/card.type'
 
@@ -13,28 +13,48 @@ export type CardsTableProps = {
   currentUserId: string
   onDeleteClick: (id: string) => void
   onEditClick: (id: string) => void
+  onSort?: (key: Sort) => void
+  sort?: Sort
 }
+
+const columns: Column[] = [
+  {
+    key: 'question',
+    title: 'Question',
+  },
+  {
+    key: 'answer',
+    title: 'Answer',
+  },
+  {
+    key: 'updated',
+    title: 'Last Updated',
+  },
+  {
+    key: 'grade',
+    title: 'Grade',
+  },
+  {
+    key: 'actions',
+    sortable: false,
+    title: '',
+  },
+]
 
 export const CardsTable = ({
   cards,
   currentUserId,
   onDeleteClick,
   onEditClick,
+  onSort,
+  sort,
 }: CardsTableProps) => {
   const handleEditClick = (id: string) => () => onEditClick(id)
   const handleDeleteClick = (id: string) => () => onDeleteClick(id)
 
   return (
     <CustomTable.Root className={s.tableRoot}>
-      <CustomTable.Head>
-        <CustomTable.Row>
-          <CustomTable.HeadCell>{'Question'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Answer'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Last Updated'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell>{'Grade'}</CustomTable.HeadCell>
-          <CustomTable.HeadCell></CustomTable.HeadCell>
-        </CustomTable.Row>
-      </CustomTable.Head>
+      <TableHeader columns={columns} onSort={onSort} sort={sort} />
       <CustomTable.Body>
         {cards?.map(card => {
           const updateAt = new Date(card.updated).toLocaleDateString('ru-Ru')

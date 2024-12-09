@@ -22,6 +22,9 @@ export type CardParams = {
   answer: string
   answerImg?: string
   answerVideo?: string
+  currentPage?: number
+  itemsPerPage?: number
+  orderBy?: string
   question: string
   questionImg?: string
   questionVideo?: string
