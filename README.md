@@ -1,30 +1,73 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# Flashcards Live Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is a live flashcards application that allows users to create, study, and manage flashcards.
 
-## Expanding the ESLint configuration
+## Test Account
+You can log in using the test account:
+- **Email:** test@test.com
+- **Password:** test
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Installation
 
-- Configure the top-level `parserOptions` property like this:
+To get started with the project, follow these steps:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Sergey-Bukreev/Flash-Cards.git
+   ```
+2. Install dependencies using pnpm:
+     ```bash
+    pnpm install
+    ```
+### Scripts
+The project includes the following commands for development and build:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Run development: 
+     ```bash
+    pnpm dev
+    ```
+    Starts the local development server using Vite.
+
+2.  Build the project:
+      ```bash
+    pnpm build
+    ```
+    Compiles TypeScript and creates a production build.
+3. Format the code:
+      ```bash
+    pnpm format
+    ```
+    Applies Prettier formatting to files in the src folder.
+4. Lint the code:
+      ```bash
+    pnpm lint
+    ```
+    Runs ESLint and Stylelint to check and fix issues in the code.
+5. Storybook:
+      ```bash
+    pnpm storybook
+    ```
+## Technologies
+The project uses the following libraries and tools:
+* **Frontend:**
+    - React 18
+    - React Router DOM
+    - React Hook Form
+    - Radix UI
+    - Redux Toolkit
+    - React Query
+    - Zod for validation
+* **Development Tools:**
+    - Vite
+    - TypeScript
+    - ESLint, Prettier, Stylelint
+    - Storybook for component development
+## Component Testing
+The project supports Storybook for component testing:
+- Run Storybook with the command:
+    
+    ```bash
+    pnpm storybook
+    ```
